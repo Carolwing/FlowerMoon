@@ -18,6 +18,14 @@ class Assets {
     static Image ballSkull;
     static Image explosionBright;
     static Image sirens;
+    static Image hpframe;
+    static Image hp;
+    static Image toprect;
+    static Image score;
+    static Image skillscore;
+    static Image pauseclicked;
+    static Image placeholder;
+    static Image streak;
 
     // Audio
     static Sound soundClick;
