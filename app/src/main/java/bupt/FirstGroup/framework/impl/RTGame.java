@@ -54,8 +54,8 @@ public class RTGame extends Activity implements Game {
         boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
         //???
         Log.i("game", String.valueOf(isPortrait));
-        int frameBufferWidth = 1920;
-        int frameBufferHeight = 1080;
+        int frameBufferWidth = getWindowManager().getDefaultDisplay().getWidth();
+        int frameBufferHeight = getWindowManager().getDefaultDisplay().getHeight();
         Bitmap frameBuffer = Bitmap.createBitmap(frameBufferWidth,
                 frameBufferHeight, Config.RGB_565);
 
@@ -75,7 +75,6 @@ public class RTGame extends Activity implements Game {
         //渲染view视图
         renderView = new RTFastRenderView(this, frameBuffer);
         //渲染画布
-
         graphics = new RTGraphics(getAssets(), frameBuffer);
         //文件读写
         fileIO = new RTFileIO(this);
