@@ -206,7 +206,7 @@ public class GameScreen extends Screen {
         for (int i=300;i<1100;i+=50){
             list_RIGHT.add(i);
         }
-        go_time=(_gameHeight+50-90)/_ballSpeed;
+        go_time=(_gameHeight)/_ballSpeed;
     }
 
     @Override
@@ -410,7 +410,7 @@ public class GameScreen extends Screen {
     private boolean removeMissed(Iterator<Ball> iterator) {
         while (iterator.hasNext()) {
             Ball b = iterator.next();
-            if (b.y>_gameHeight+90){
+            if (b.y>_gameHeight+Assets.ballNormal.getHeight()/2){
                 iterator.remove();
                 Log.d(TAG, "fail press");
                 onMiss(b);
@@ -437,11 +437,11 @@ public class GameScreen extends Screen {
         }
         else
             return true;
-        if (Math.abs(lowestBall.y-(_gameHeight-90))<180){
+        if (Math.abs(lowestBall.y-(_gameHeight-Assets.ballNormal.getHeight()/2))<120){
             balls.remove(lowestBall);
             onHit(lowestBall);
             return true;
-        }else if (Math.abs(lowestBall.y-(_gameHeight-90))>180&&Math.abs(lowestBall.y-(_gameHeight-90))<270){
+        }else if (Math.abs(lowestBall.y-(_gameHeight-Assets.ballNormal.getHeight()/2))>120&&Math.abs(lowestBall.y-(_gameHeight-Assets.ballNormal.getHeight()/2))<180){
             balls.remove(lowestBall);
             onMiss(null);
             return false;
@@ -532,18 +532,6 @@ public class GameScreen extends Screen {
     }
 
     private void spawnBalls() {
-//        float randFloat = _rand.nextFloat();
-//        final int ballY = BALL_INITIAL_Y;
-//        int ballX = _gameWidth / 3 / 2;
-//        spawnBall(_ballsLeft, randFloat, ballX, ballY);
-//
-//        randFloat = _rand.nextFloat();
-//        ballX = _gameWidth / 2;
-//        spawnBall(_ballsMiddle, randFloat, ballX, ballY);
-//
-//        randFloat = _rand.nextFloat();
-//        ballX = _gameWidth - _gameWidth / 3 / 2;
-//        spawnBall(_ballsRight, randFloat, ballX, ballY);
         if (last_key_left+1<list_LEFT.size()&&_currentTime+go_time>=list_LEFT.get(last_key_left+1)){
             int x = (_gameWidth/2-Assets.placeholder.getWidth()*4/10+_gameWidth/2-Assets.placeholder.getWidth()/10)/2;
             int y = -Assets.ballNormal.getHeight()/2;
@@ -709,8 +697,17 @@ public class GameScreen extends Screen {
     private void drawRunningUI() {
         Graphics g = game.getGraphics();
         g.drawImage(Assets.toprect,_gameWidth/2-Assets.toprect.getWidth()/2,0);
-        g.drawImage(Assets.hpframe,Assets.placeholder.getWidth()/6,Assets.toprect.getHeight()/3);
-        g.drawImage(Assets.hp,Assets.placeholder.getWidth()/6,Assets.toprect.getHeight()/3);
+        //lst version
+//        g.drawImage(Assets.hpframe, Assets.placeholder.getWidth() / 8,
+//                Assets.toprect.getHeight() / 3);
+//        g.drawImage(Assets.hp, Assets.placeholder.getWidth() / 8,
+//                Assets.toprect.getHeight() / 3);
+        //hy version
+        g.drawScaledImage(Assets.hpframe,_gameWidth/192,Assets.toprect.getHeight()/5,_gameWidth/4,Assets.toprect.getHeight()/2,0,0,Assets.hpframe.getWidth(),Assets.hpframe.getHeight());
+        g.drawScaledImage(Assets.hp,_gameWidth/192,Assets.toprect.getHeight()/5,_gameWidth/4,Assets.toprect.getHeight()/2,0,0,Assets.hp.getWidth(),Assets.hp.getHeight());
+
+//        g.drawImage(Assets.hpframe,Assets.placeholder.getWidth()/8,Assets.toprect.getHeight()/3);
+//        g.drawImage(Assets.hp,Assets.placeholder.getWidth()/8,Assets.toprect.getHeight()/3);
         g.drawImage(Assets.score,_gameWidth/2+Assets.placeholder.getWidth(),Assets.toprect.getHeight()/6);
         g.drawImage(Assets.pause,_gameWidth/2-Assets.pause.getWidth()/2,0);
 
