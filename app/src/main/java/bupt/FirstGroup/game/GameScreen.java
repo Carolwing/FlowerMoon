@@ -222,6 +222,7 @@ public class GameScreen extends Screen {
         checkEnd();
 
         // 3. Individual update() methods.
+        // 球下落
         updateVariables(deltaTime);
     }
 
@@ -285,7 +286,7 @@ public class GameScreen extends Screen {
             TouchEvent event = touchEvents.get(i);
 
             if (event.type == TouchEvent.TOUCH_DOWN) {
-                if (event.y > 1500) {
+                if (event.y > 300) {
                     // ball hit area
                     if (event.x < _gameWidth / 3) {
                         if (!hitLane(_ballsLeft)) {
