@@ -26,7 +26,12 @@ public class LoadingScreen extends Screen {
     @Override
     public void update(float deltaTime) {
         Graphics g = game.getGraphics();
+        //加载特效资源，暂空
+
+        //加载按钮资源
+        Assets.flower_key1=g.newImage(IMAGE_PATH+"flower_key_1.png",Graphics.ImageFormat.ARGB4444);
         //加载图片资源
+        Assets.scale = g.newImage(IMAGE_PATH+"scale_1.png",Graphics.ImageFormat.RGB565);
         Assets.background = g.newImage(IMAGE_PATH + "background4.png", Graphics.ImageFormat.RGB565);
         Assets.placeholder =g.newImage(IMAGE_PATH+"placeholder.png",Graphics.ImageFormat.RGB565);
         Assets.hpframe= g.newImage(IMAGE_PATH+"hp.png",Graphics.ImageFormat.RGB565);
