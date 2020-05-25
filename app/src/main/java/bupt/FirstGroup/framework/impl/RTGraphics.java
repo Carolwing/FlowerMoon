@@ -4,6 +4,7 @@ package bupt.FirstGroup.framework.impl;
 import java.io.IOException;
 import java.io.InputStream;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -81,7 +82,7 @@ public class RTGraphics implements Graphics {
             format = ImageFormat.ARGB4444;
         else
             format = ImageFormat.ARGB8888;
-        if (fileName=="img/key_cut.png") {
+        if (fileName=="img/key_cut.png"|fileName=="img/scale_1.png") {
             int width=bitmap.getWidth();
             int height=bitmap.getHeight();
             //设置想要的大小
@@ -102,6 +103,8 @@ public class RTGraphics implements Graphics {
         Log.i("lalala",fileName+":"+String.valueOf(bitmap.getWidth()));
         return new RTImage(bitmap, format);
     }
+
+//    @Override
 
     @Override
     public void clearScreen(int color) {
