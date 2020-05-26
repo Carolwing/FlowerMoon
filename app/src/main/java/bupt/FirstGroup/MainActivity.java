@@ -12,7 +12,7 @@ import android.widget.ImageButton;
 public class MainActivity extends AppCompatActivity {
     private Button _startBtn;
     private Button _highscoreBtn;
-    private Button _aboutBtn;
+    private Button _aboutBtn,login_btn;
     private ImageButton strat_btn;
     private ImageButton highscore_btn;
     private ImageButton about_btn;
@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        login_btn = (Button)findViewById(R.id.login_btn);
         strat_btn=(ImageButton)findViewById(R.id.main_start_button);
         highscore_btn=(ImageButton)findViewById(R.id.main_highscore_button);
         about_btn=(ImageButton)findViewById(R.id.main_about_button);
@@ -32,6 +33,13 @@ public class MainActivity extends AppCompatActivity {
         level2_btn=(ImageButton)findViewById(R.id.main_second_button);
         level3_btn=(ImageButton)findViewById(R.id.main_third_button);
 
+        login_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(MainActivity.this,LoginActivity.class);
+                MainActivity.this.startActivity(i);
+            }
+        });
         strat_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

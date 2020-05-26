@@ -74,5 +74,12 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/login_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:text="登录注册" />
+
 
 </LinearLayout>

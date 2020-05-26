@@ -316,42 +316,7 @@ public class GameScreen extends Screen {
             TouchEvent event = touchEvents.get(i);
 
             if (event.type == TouchEvent.TOUCH_DOWN) {
-<<<<<<< HEAD
-                if (event.y > 300) {
-                    // ball hit area
-                    if (event.x < _gameWidth / 3) {
-                        if (!hitLane(_ballsLeft)) {
-                            // if no ball was hit
-                            _laneHitAlphaLeft = MISS_FLASH_INITIAL_ALPHA;
-                        }
-                    }
-                    else if (event.x < _gameWidth / 3 * 2) {
-                        if (!hitLane(_ballsMiddle))
-                        {
-                            _laneHitAlphaMiddle = MISS_FLASH_INITIAL_ALPHA;
-                        }
-                    }
-                    else {
-                        if (!hitLane(_ballsRight)) {
-                            _laneHitAlphaRight = MISS_FLASH_INITIAL_ALPHA;
-                        }
-                    }
-                }
-                else {
-                    // pause area
-                    touchEvents.clear();
-                    pause();
-                    break;
-=======
-                if (event.x<_gameWidth/2){
-                    hitLane(_ballsLeft,list_Flower_Left);
-                }else{
-<<<<<<< HEAD
-                    hitLane(_ballsRight);
->>>>>>> f68eb2ceeeb4bae8e25caf2237b9dba7ec7a5a92
-=======
-                    hitLane(_ballsRight,list_Flower_Right);
->>>>>>> d6b68a73dff9859ace178ca4f4741e1227bbcb71
+
                 }
             }
 //                if (event.y > 1500) {
@@ -381,7 +346,7 @@ public class GameScreen extends Screen {
 //                    break;
 //                }
 //            }
-        }
+
     }
 
     // update all the games variables each tick
