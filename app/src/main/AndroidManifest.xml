@@ -13,6 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ImageAnimation"
+            android:screenOrientation="landscape"/>
         <activity android:name=".AboutActivity"
             android:screenOrientation="landscape"></activity>
         <activity android:name=".HighscoreActivity"
