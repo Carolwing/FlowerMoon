@@ -3,6 +3,8 @@ package bupt.FirstGroup.game;
 import bupt.FirstGroup.framework.Image;
 import bupt.FirstGroup.framework.Music;
 import bupt.FirstGroup.framework.Sound;
+//import bupt.FirstGroup.framework.impl.*;
+import bupt.FirstGroup.framework.impl.ButtonImage;
 
 class Assets {
     // Graphics
@@ -26,6 +28,9 @@ class Assets {
     static Image pauseclicked;
     static Image placeholder;
     static Image streak;
+    static Image scale;
+    static Image flower_key1;
+    static Image flower_key2;
 
     // Audio
     static Sound soundClick;
