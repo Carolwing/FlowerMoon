@@ -104,7 +104,44 @@ public class DBConnection {
             }
         }catch(Exception e){
             e.printStackTrace();
+        }finally{
+            if(conn!=null){
+                try{
+                    conn.close();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        return resultString;
+    }
+    public static String addRecord(String time,int score,String grade,String userName){
+        String resultString = "";
+        PreparedStatement stmt = null;
+        Connection conn = linkMysql();
+        //用户是否注册
+        try{
+            String sql = "insert into record(time,score,grade,username) values(?,?,?,?)";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1,time);
+            stmt.setInt(2,score);
+            stmt.setString(3,grade);
+            stmt.setString(4,userName);
+            stmt.executeUpdate();
+            resultString="插入成功";
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            if(conn!=null){
+                try{
+                    conn.close();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
         return resultString;
     }
 }
+
