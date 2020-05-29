@@ -4,21 +4,29 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-public class MainActivity extends AppCompatActivity {
-    private Button _startBtn;
-    private Button _highscoreBtn;
-    private Button _aboutBtn,login_btn;
+import bupt.FirstGroup.models.Difficulty;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+    private Button login_btn;
     private ImageButton strat_btn;
     private ImageButton highscore_btn;
     private ImageButton about_btn;
     private ImageButton level1_btn;
     private ImageButton level2_btn;
     private ImageButton level3_btn;
+
+    private final Difficulty _diffEasy =
+            new Difficulty(Difficulty.EASY_TAG, "Spyro_Year_of_the_Dragon_Acoustic_Fields_OC_ReMix.mp3", 115f/2, 8);
+    private final Difficulty _diffMid =
+            new Difficulty(Difficulty.MED_TAG, "super_meat_boy_power_of_the_meat.mp3", 128, 10);
+    private final Difficulty _diffHard =
+            new Difficulty(Difficulty.HARD_TAG, "Aquaria_Minibadass_OC_ReMix.mp3", 180, 15);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +37,13 @@ public class MainActivity extends AppCompatActivity {
         strat_btn=(ImageButton)findViewById(R.id.main_start_button);
         highscore_btn=(ImageButton)findViewById(R.id.main_highscore_button);
         about_btn=(ImageButton)findViewById(R.id.main_about_button);
-        level1_btn=(ImageButton)findViewById(R.id.main_first_button);
-        level2_btn=(ImageButton)findViewById(R.id.main_second_button);
-        level3_btn=(ImageButton)findViewById(R.id.main_third_button);
+        this.level1_btn=(ImageButton)findViewById(R.id.main_first_button);
+        this.level2_btn=(ImageButton)findViewById(R.id.main_second_button);
+        this.level3_btn=(ImageButton)findViewById(R.id.main_third_button);
+        this.level1_btn.setOnClickListener(this);
+        this.level2_btn.setOnClickListener(this);
+        this.level3_btn.setOnClickListener(this);
+
 
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,13 +76,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /*
         level1_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(MainActivity.this,ImageAnimation.class);
                 MainActivity.this.startActivity(i);
             }
-        });
+        });*/
 
         strat_btn.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -162,5 +175,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent i;
+        switch (v.getId()) {
+            case R.id.main_first_button:
+                i = new Intent(this, GameActivity.class);
+                i.putExtra("difficulty", this._diffEasy);
+                this.startActivity(i);
+                break;
+            case R.id.main_second_button:
+                i = new Intent(this, GameActivity.class);
+                i.putExtra("difficulty", this._diffMid);
+                this.startActivity(i);
+                break;
+            case R.id.main_third_button:
+                i = new Intent(this, GameActivity.class);
+                i.putExtra("difficulty", this._diffHard);
+                this.startActivity(i);
+                break;
+            default:
+                Log.e("","unexpected id!");
+        }
     }
 }
