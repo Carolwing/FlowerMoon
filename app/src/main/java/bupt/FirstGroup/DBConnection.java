@@ -65,7 +65,7 @@ public class DBConnection {
                     stmt.setString(2,phone);
                     stmt.setString(3,password);
                     stmt.executeUpdate();
-                    resultString="注册成功，请登录";
+                    resultString="注册成功";
                     Log.i("mysql","add user");
 
                 }

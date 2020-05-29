@@ -3,23 +3,29 @@ package bupt.FirstGroup;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
+import bupt.FirstGroup.entity.CurrentUser;
 import bupt.FirstGroup.models.Difficulty;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    private Button login_btn;
+
     private ImageButton strat_btn;
     private ImageButton highscore_btn;
     private ImageButton about_btn;
     private ImageButton level1_btn;
     private ImageButton level2_btn;
     private ImageButton level3_btn;
+    private TextView showuser;
+
 
     private final Difficulty _diffEasy =
             new Difficulty(Difficulty.EASY_TAG, "Spyro_Year_of_the_Dragon_Acoustic_Fields_OC_ReMix.mp3", 115f/2, 8);
@@ -32,8 +38,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        login_btn = (Button)findViewById(R.id.login_btn);
+        System.out.println(CurrentUser.getName());
+        showuser = (TextView)findViewById(R.id.userName);
         strat_btn=(ImageButton)findViewById(R.id.main_start_button);
         highscore_btn=(ImageButton)findViewById(R.id.main_highscore_button);
         about_btn=(ImageButton)findViewById(R.id.main_about_button);
@@ -43,15 +49,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.level1_btn.setOnClickListener(this);
         this.level2_btn.setOnClickListener(this);
         this.level3_btn.setOnClickListener(this);
+        showuser.setText("欢迎 "+CurrentUser.getName());
+        showuser.setTextColor(Color.WHITE);
 
 
-        login_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i=new Intent(MainActivity.this,LoginActivity.class);
-                MainActivity.this.startActivity(i);
-            }
-        });
+
         strat_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
