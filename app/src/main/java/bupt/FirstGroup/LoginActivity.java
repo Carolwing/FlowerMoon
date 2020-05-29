@@ -66,6 +66,8 @@ public class LoginActivity extends AppCompatActivity {
                         Toast toast = Toast.makeText(LoginActivity.this, result, Toast.LENGTH_SHORT);
                         toast.show();
                         Looper.loop();
+                        System.out.println(result);
+                        System.out.println(result.equals("登录成功"));
                         if(result.equals("登录成功")){
                         //一下代码为跳转界面
                          Intent intent=new Intent(LoginActivity.this, MainActivity.class);
