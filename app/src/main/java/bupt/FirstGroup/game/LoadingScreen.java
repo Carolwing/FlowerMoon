@@ -3,6 +3,8 @@ package bupt.FirstGroup.game;
 import android.content.res.AssetManager;
 import android.util.Log;
 
+import java.io.IOException;
+
 import bupt.FirstGroup.framework.Game;
 import bupt.FirstGroup.framework.Graphics;
 import bupt.FirstGroup.framework.Screen;
@@ -15,6 +17,7 @@ public class LoadingScreen extends Screen {
     private static final String IMAGE_PATH = "img/";
     private static final String SOUND_EFFECTS_PATH = "audio/";
     private static final String MUSIC_PATH = "music/";
+    private static final String MUSIC_SCORE_PATH= "musicScore/";
 
 
     public LoadingScreen(Game game, Difficulty difficulty) {
@@ -30,6 +33,15 @@ public class LoadingScreen extends Screen {
 
         //加载按钮资源
         Assets.flower_key1=g.newImage(IMAGE_PATH+"flower_key_1.png",Graphics.ImageFormat.ARGB4444);
+
+        //加载其他资源
+        Assets.combo=g.newImage(IMAGE_PATH+"combo.png",Graphics.ImageFormat.ARGB4444);
+        Assets.perfect=g.newImage(IMAGE_PATH+"perfect1.png",Graphics.ImageFormat.ARGB4444);
+        Assets.great=g.newImage(IMAGE_PATH+"great1.png",Graphics.ImageFormat.ARGB4444);
+        Assets.miss=g.newImage(IMAGE_PATH+"miss1.png",Graphics.ImageFormat.ARGB4444);
+        Assets.perfect.resetSize(2*Assets.perfect.getWidth(),2*Assets.perfect.getHeight());
+        Assets.great.resetSize(2*Assets.great.getWidth(),2*Assets.great.getHeight());
+        Assets.miss.resetSize(2*Assets.miss.getWidth(),2*Assets.miss.getHeight());
         //加载图片资源
         Assets.scale = g.newImage(IMAGE_PATH+"scale_1.png",Graphics.ImageFormat.RGB565);
         Assets.background = g.newImage(IMAGE_PATH + "background4.png", Graphics.ImageFormat.RGB565);
@@ -58,6 +70,11 @@ public class LoadingScreen extends Screen {
         Assets.soundCreepyLaugh = game.getAudio().createSound(SOUND_EFFECTS_PATH + "sound_creepy_laugh.mp3");
         //加载音乐资源
         Assets.musicTrack = game.getAudio().createMusic(MUSIC_PATH + _diff.getMusic());
+        try {
+            Assets.musicScore = game.getFileIO().readAsset(MUSIC_SCORE_PATH + _diff.getScoreTime());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         game.setScreen(new GameScreen((RTGame)game, _diff));
     }
