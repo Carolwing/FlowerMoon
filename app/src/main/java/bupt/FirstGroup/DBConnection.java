@@ -65,7 +65,7 @@ public class DBConnection {
                     stmt.setString(2,phone);
                     stmt.setString(3,password);
                     stmt.executeUpdate();
-                    resultString="注册成功，请登录";
+                    resultString="注册成功";
                     Log.i("mysql","add user");
 
                 }
@@ -141,6 +141,39 @@ public class DBConnection {
                 }
             }
         }
+        return resultString;
+    }
+    public static String[] findMaxScore(int grade) {
+        PreparedStatement stmt = null;
+        Connection conn = linkMysql();
+        ResultSet rs = null;
+        String[] resultString = new String[4];
+        try {
+            String sql = "select * from record where grade = ? and score=(select max(score) from record group by grade having grade=?)";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, grade);
+            stmt.setInt(2,grade);
+            rs = stmt.executeQuery();
+            if(rs.next()){
+
+                resultString[0] = rs.getString("time");
+                resultString[1] = String.valueOf(rs.getInt("score"));
+                resultString[2]= String.valueOf(rs.getString("username"));
+                resultString[3]= String.valueOf(rs.getInt("grade"));
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        System.out.println(resultString[1]+"findMaxScore");
         return resultString;
     }
 }
