@@ -31,9 +31,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final Difficulty _diffEasy =
             new Difficulty(Difficulty.EASY_TAG, "easy.mp3", 115f/2, 8,"easy.txt");
     private final Difficulty _diffMid =
-            new Difficulty(Difficulty.MED_TAG, "super_meat_boy_power_of_the_meat.mp3", 128, 10);
+            new Difficulty(Difficulty.MED_TAG, "super_meat_boy_power_of_the_meat.mp3", 128, 10,"easy.txt");
     private final Difficulty _diffHard =
-            new Difficulty(Difficulty.HARD_TAG, "Aquaria_Minibadass_OC_ReMix.mp3", 180, 15);
+            new Difficulty(Difficulty.HARD_TAG, "Aquaria_Minibadass_OC_ReMix.mp3", 180, 15,"easy.txt");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
