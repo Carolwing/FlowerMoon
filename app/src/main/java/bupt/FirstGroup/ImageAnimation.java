@@ -27,36 +27,8 @@ public class ImageAnimation extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anim);
         /*
-        //获取旋转加消失的动画资源
-        //final Animation rotate= AnimationUtils.loadAnimation(ImageAnimation.this,R.anim.rotate);
-        //获取展示动画效果的ImageView控件
-        final ImageView imgv1=(ImageView)findViewById(R.id.image_test1);
-        Button btn1=(Button)findViewById(R.id.btn_test1);
-        btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //imgv1.startAnimation(rotate);
-                showAnimRotate(800,300,imgv1);
-            }
-        });
-
-        //触碰效果
-        Button btn2=(Button)findViewById(R.id.btn_test2);
-        btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ImageView imageView2 = findViewById(R.id.image_test2);
-                imageView2.setBackgroundResource(R.drawable.touch);
-                AnimationDrawable animaition = (AnimationDrawable)imageView2.getBackground();
-                animaition.setOneShot(false);   //设置是否只播放一次，和上面xml配置效果一致,true为只播放一次，false为循环播放
-                animaition.start();             //启动动画
-                //showAnimTouch(300,400,imageView2);
-            }
-        });*/
-
-
         //使用FrameLayout布局管理器，它允许组件组件控制位置
-        /*FrameLayout frame=new FrameLayout(this);
+        FrameLayout frame=new FrameLayout(this);
         setContentView(frame);
         myView=new MyView(this);
         //设置myView用于显示 touch 动画
@@ -65,8 +37,8 @@ public class ImageAnimation extends AppCompatActivity{
         myView.setVisibility(View.INVISIBLE);
         //获取动画对象
         anim=(AnimationDrawable)myView.getBackground();
-        frame.addView(myView);*/
-        /*frame.setOnTouchListener(new View.OnTouchListener(){
+        frame.addView(myView);
+        frame.setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch(View source, MotionEvent event){
                 //处理按下事件
@@ -85,17 +57,26 @@ public class ImageAnimation extends AppCompatActivity{
             }
 
         });*/
+
         Button btn1=(Button)findViewById(R.id.btn_test1);
+        final ImageView imageView=(ImageView)findViewById(R.id.image_test1);
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAnimTouch(10,10);
+                showAnimTouch(1,1);
+                //showAnimRotate(imageView);
             }
         });
     }
+    //旋转消失
+    public void showAnimRotate(ImageView imageView){
+        //获取旋转加消失的动画资源
+        final Animation rotate= AnimationUtils.loadAnimation(ImageAnimation.this,R.anim.rotate);
+        imageView.startAnimation(rotate);
+    }
 
     //触碰效果
-    public void showAnimTouch(int x,int y){
+    public void showAnimTouch(final int x,final int y){
         //使用FrameLayout布局管理器，它允许组件组件控制位置
         FrameLayout frame=new FrameLayout(this);
         setContentView(frame);
