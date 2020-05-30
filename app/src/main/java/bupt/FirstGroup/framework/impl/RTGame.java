@@ -1,5 +1,6 @@
 package bupt.FirstGroup.framework.impl;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -40,6 +41,7 @@ public class RTGame extends Activity implements Game {
         startActivity(i);
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +56,10 @@ public class RTGame extends Activity implements Game {
         boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
         //???
         Log.i("game", String.valueOf(isPortrait));
+
         int frameBufferWidth = getWindowManager().getDefaultDisplay().getWidth();
         int frameBufferHeight = getWindowManager().getDefaultDisplay().getHeight();
+
         Bitmap frameBuffer = Bitmap.createBitmap(frameBufferWidth,
                 frameBufferHeight, Config.RGB_565);
 

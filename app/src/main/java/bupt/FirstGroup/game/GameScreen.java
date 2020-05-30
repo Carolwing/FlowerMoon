@@ -308,6 +308,7 @@ public class GameScreen extends Screen {
         checkEnd();
 
         // 3. Individual update() methods.
+        // 球下落
         updateVariables(deltaTime);
     }
 
@@ -375,6 +376,7 @@ public class GameScreen extends Screen {
                     hitLane(_ballsLeft,list_Flower_Left);
                 }else if (right!=null&&event.x>=right.getX()&&event.x<=right.getX()+right.getWidth()&&event.y>=right.getY()&&event.y<=right.getY()+right.getHeight()){
                     hitLane(_ballsRight,list_Flower_Right);
+
                 }
 //                if (event.x<_gameWidth/2){
 //                    hitLane(_ballsLeft,list_Flower_Left);
@@ -384,6 +386,14 @@ public class GameScreen extends Screen {
             }
 //
         }
+//                else {
+//                    // pause area
+//                    touchEvents.clear();
+//                    pause();
+//                    break;
+//                }
+//            }
+
     }
 
     // update all the games variables each tick

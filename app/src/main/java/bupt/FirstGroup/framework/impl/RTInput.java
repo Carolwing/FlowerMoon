@@ -34,8 +34,6 @@ public class RTInput implements Input {
         return touchHandler.getTouchY(pointer);
     }
 
-
-
     @Override
     public List<TouchEvent> getTouchEvents() {
         return touchHandler.getTouchEvents();
