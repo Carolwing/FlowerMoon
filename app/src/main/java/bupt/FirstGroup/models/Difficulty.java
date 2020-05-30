@@ -16,12 +16,14 @@ public class Difficulty implements Serializable{
     private float _spawnInterval;
     private int _ballSpeed;
     private String _mode;
+    private String scoreTime;
 
-    public Difficulty(String _mode, String music, float bpm, int ballSpeed) {
+    public Difficulty(String _mode, String music, float bpm, int ballSpeed, String scoreTime) {
         this._mode = _mode;
         this._music = music;
         this._spawnInterval = 60 / bpm * 100 / 2;
         this._ballSpeed = ballSpeed;
+        this.scoreTime=scoreTime;
     }
 
     public String getMusic() {
@@ -54,5 +56,13 @@ public class Difficulty implements Serializable{
 
     public void setMode(String _mode) {
         this._mode = _mode;
+    }
+
+    public void setScoreTime(String scoreTime) {
+        this.scoreTime = scoreTime;
+    }
+
+    public String getScoreTime() {
+        return scoreTime;
     }
 }
