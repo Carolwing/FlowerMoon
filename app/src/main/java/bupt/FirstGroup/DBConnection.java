@@ -143,5 +143,37 @@ public class DBConnection {
         }
         return resultString;
     }
+    public static String[] findMaxScore(int grade) {
+        PreparedStatement stmt = null;
+        Connection conn = linkMysql();
+        ResultSet rs = null;
+        String[] resultString = new String[5];
+        try {
+            String sql = "select * from record where grade = ? and score=(select max(score) from record group by grade having grade=?)";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, grade);
+            stmt.setInt(2,grade);
+            rs = stmt.executeQuery();
+            if(rs.next()){
+
+                resultString[0] = rs.getString("time");
+                resultString[1] = String.valueOf(rs.getInt("score"));
+                resultString[2]= String.valueOf(rs.getInt("grade"));
+                resultString[3]= String.valueOf(rs.getString("username"));
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return resultString;
+    }
 }
 
