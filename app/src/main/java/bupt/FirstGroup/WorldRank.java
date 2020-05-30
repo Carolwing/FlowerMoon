@@ -12,8 +12,3 @@ public class WorldRank {
         return result;
     }
 }
-/*
-result[1] = db.findMaxScore(1);
-                result[2] = db.findMaxScore(2);
-                result[3] = db.findMaxScore(3);
- */

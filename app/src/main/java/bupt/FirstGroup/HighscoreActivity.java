@@ -2,28 +2,11 @@ package bupt.FirstGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.content.SharedPreferences;
-import android.os.Looper;
-import android.preference.PreferenceManager;
-import android.text.format.DateFormat;
-import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
-import java.text.ParseException;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
-
-import bupt.FirstGroup.entity.CurrentUser;
-import bupt.FirstGroup.models.Difficulty;
 
 
 public class HighscoreActivity extends AppCompatActivity {
@@ -50,8 +33,6 @@ public class HighscoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_highscore);
 
-        //_highscoreView = (ListView)this.findViewById(R.id.highscore_list_view);
-
         _easyTxtView = (TextView) this.findViewById(R.id.tv_score1);
         _medTxtView = (TextView) this.findViewById(R.id.tv_score2);
         _hardTxtView = (TextView) this.findViewById(R.id.tv_score3);
@@ -67,7 +48,7 @@ public class HighscoreActivity extends AppCompatActivity {
         item[0][1] = (TextView) this.findViewById(R.id.tv_time1);
         item[1][1] = (TextView) this.findViewById(R.id.tv_time2);
         item[2][1] = (TextView) this.findViewById(R.id.tv_time3);
-        item[0][2]= (TextView) this.findViewById(R.id.tv_name1);
+        item[0][2] = (TextView) this.findViewById(R.id.tv_name1);
         item[1][2] = (TextView) this.findViewById(R.id.tv_name2);
         item[2][2] = (TextView) this.findViewById(R.id.tv_name3);
         // load highscores
@@ -129,16 +110,16 @@ public class HighscoreActivity extends AppCompatActivity {
                     public void run() {
                         DBConnection db = new DBConnection();
                         System.out.println(" worldrank");
-                        String[] r1=db.findMaxScore(1);
-                        String[] r2=db.findMaxScore(2);
-                        String[] r3=db.findMaxScore(3);
-                        System.out.println(" worldrank "+r1[2]+r2[2]);
+                        String[] r1 = db.findMaxScore(1);
+                        String[] r2 = db.findMaxScore(2);
+                        String[] r3 = db.findMaxScore(3);
+                        System.out.println(" worldrank " + r1[2] + r2[2]);
                         WorldRank.setResult(new String[][]{r1, r2, r3});
-                        System.out.println(WorldRank.result[2][1]+" --WorldRank.result[2][1] in Run");
+                        System.out.println(WorldRank.result[2][1] + " --WorldRank.result[2][1] in Run");
                         String[][] print = WorldRank.getResult();
                         for (int i = 0; i < item.length; i++) {
                             for (int j = 0; j < item[i].length; j++) {
-                                System.out.println("End of thread result["+i+"]["+j+"]:"+print[i][j]);
+                                System.out.println("End of thread result[" + i + "][" + j + "]:" + print[i][j]);
                                 item[i][j].setText(print[i][j]);
                             }
                         }

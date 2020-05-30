@@ -17,7 +17,7 @@ import bupt.FirstGroup.entity.CurrentUser;
 import bupt.FirstGroup.entity.Record;
 import bupt.FirstGroup.models.Difficulty;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageButton strat_btn;
     private ImageButton highscore_btn;
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private final Difficulty _diffEasy =
-            new Difficulty(Difficulty.EASY_TAG, "Spyro_Year_of_the_Dragon_Acoustic_Fields_OC_ReMix.mp3", 115f/2, 8);
+            new Difficulty(Difficulty.EASY_TAG, "Spyro_Year_of_the_Dragon_Acoustic_Fields_OC_ReMix.mp3", 115f / 2, 8);
     private final Difficulty _diffMid =
             new Difficulty(Difficulty.MED_TAG, "super_meat_boy_power_of_the_meat.mp3", 128, 10);
     private final Difficulty _diffHard =
@@ -40,27 +40,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         System.out.println(CurrentUser.getName());
-        showuser = (TextView)findViewById(R.id.userName);
-        strat_btn=(ImageButton)findViewById(R.id.main_start_button);
-        highscore_btn=(ImageButton)findViewById(R.id.main_highscore_button);
-        about_btn=(ImageButton)findViewById(R.id.main_about_button);
-        this.level1_btn=(ImageButton)findViewById(R.id.main_first_button);
-        this.level2_btn=(ImageButton)findViewById(R.id.main_second_button);
-        this.level3_btn=(ImageButton)findViewById(R.id.main_third_button);
+        showuser = (TextView) findViewById(R.id.userName);
+        strat_btn = (ImageButton) findViewById(R.id.main_start_button);
+        highscore_btn = (ImageButton) findViewById(R.id.main_highscore_button);
+        about_btn = (ImageButton) findViewById(R.id.main_about_button);
+        this.level1_btn = (ImageButton) findViewById(R.id.main_first_button);
+        this.level2_btn = (ImageButton) findViewById(R.id.main_second_button);
+        this.level3_btn = (ImageButton) findViewById(R.id.main_third_button);
         this.level1_btn.setOnClickListener(this);
         this.level2_btn.setOnClickListener(this);
         this.level3_btn.setOnClickListener(this);
-        showuser.setText("欢迎 "+CurrentUser.getName());
+        showuser.setText("欢迎 " + CurrentUser.getName());
         showuser.setTextColor(Color.WHITE);
-        //Record record = new Record(500,1);
-        //showuser.append(record.toString());
-
 
 
         strat_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(MainActivity.this,DifficultySelectionActivity.class);
+                Intent i = new Intent(MainActivity.this, DifficultySelectionActivity.class);
                 MainActivity.this.startActivity(i);
             }
         });
@@ -68,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         highscore_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(MainActivity.this,HighscoreActivity.class);
+                Intent i = new Intent(MainActivity.this, HighscoreActivity.class);
                 MainActivity.this.startActivity(i);
             }
         });
@@ -76,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         about_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(MainActivity.this,AboutActivity.class);
+                Intent i = new Intent(MainActivity.this, AboutActivity.class);
                 MainActivity.this.startActivity(i);
             }
         });
@@ -93,13 +90,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         strat_btn.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction()==MotionEvent.ACTION_DOWN){//点击按钮
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {//点击按钮
                     //重新设置按下去时的按钮图片
-                    ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.start_btn2));
-                }
-                else if (event.getAction()==MotionEvent.ACTION_UP){//松开按钮
+                    ((ImageButton) v).setImageDrawable(getResources().getDrawable(R.mipmap.start_btn2));
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {//松开按钮
                     //再修改为正常抬起时的图片
-                    ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.start_btn1));
+                    ((ImageButton) v).setImageDrawable(getResources().getDrawable(R.mipmap.start_btn1));
                 }
                 return false;
             }
@@ -108,13 +104,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         highscore_btn.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction()==MotionEvent.ACTION_DOWN){//点击按钮
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {//点击按钮
                     //重新设置按下去时的按钮图片
-                    ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.score2));
-                }
-                else if (event.getAction()==MotionEvent.ACTION_UP){//松开按钮
+                    ((ImageButton) v).setImageDrawable(getResources().getDrawable(R.mipmap.score2));
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {//松开按钮
                     //再修改为正常抬起时的图片
-                    ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.score1));
+                    ((ImageButton) v).setImageDrawable(getResources().getDrawable(R.mipmap.score1));
                 }
                 return false;
             }
@@ -123,13 +118,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         about_btn.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction()==MotionEvent.ACTION_DOWN){//点击按钮
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {//点击按钮
                     //重新设置按下去时的按钮图片
-                    ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.about2));
-                }
-                else if (event.getAction()==MotionEvent.ACTION_UP){//松开按钮
+                    ((ImageButton) v).setImageDrawable(getResources().getDrawable(R.mipmap.about2));
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {//松开按钮
                     //再修改为正常抬起时的图片
-                    ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.about1));
+                    ((ImageButton) v).setImageDrawable(getResources().getDrawable(R.mipmap.about1));
                 }
                 return false;
             }
@@ -138,13 +132,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         level1_btn.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction()==MotionEvent.ACTION_DOWN){//点击按钮
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {//点击按钮
                     //重新设置按下去时的按钮图片
-                    ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.level1unclicked));
-                }
-                else if (event.getAction()==MotionEvent.ACTION_UP){//松开按钮
+                    ((ImageButton) v).setImageDrawable(getResources().getDrawable(R.mipmap.level1unclicked));
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {//松开按钮
                     //再修改为正常抬起时的图片
-                    ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.level1clicked));
+                    ((ImageButton) v).setImageDrawable(getResources().getDrawable(R.mipmap.level1clicked));
                 }
                 return false;
             }
@@ -153,13 +146,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         level2_btn.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction()==MotionEvent.ACTION_DOWN){//点击按钮
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {//点击按钮
                     //重新设置按下去时的按钮图片
-                    ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.level2unclicked));
-                }
-                else if (event.getAction()==MotionEvent.ACTION_UP){//松开按钮
+                    ((ImageButton) v).setImageDrawable(getResources().getDrawable(R.mipmap.level2unclicked));
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {//松开按钮
                     //再修改为正常抬起时的图片
-                    ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.level2clicked));
+                    ((ImageButton) v).setImageDrawable(getResources().getDrawable(R.mipmap.level2clicked));
                 }
                 return false;
             }
@@ -168,13 +160,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         level3_btn.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction()==MotionEvent.ACTION_DOWN){//点击按钮
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {//点击按钮
                     //重新设置按下去时的按钮图片
-                    ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.level3unclicked));
-                }
-                else if (event.getAction()==MotionEvent.ACTION_UP){//松开按钮
+                    ((ImageButton) v).setImageDrawable(getResources().getDrawable(R.mipmap.level3unclicked));
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {//松开按钮
                     //再修改为正常抬起时的图片
-                    ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.level3clicked));
+                    ((ImageButton) v).setImageDrawable(getResources().getDrawable(R.mipmap.level3clicked));
                 }
                 return false;
             }
@@ -202,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 this.startActivity(i);
                 break;
             default:
-                Log.e("","unexpected id!");
+                Log.e("", "unexpected id!");
         }
     }
 }
