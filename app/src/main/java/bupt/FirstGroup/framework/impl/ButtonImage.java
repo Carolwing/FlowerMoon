@@ -67,6 +67,13 @@ public class ButtonImage {
             return image.getFormat();
     }
 
+    public Image getImage(){
+        return image;
+    }
+
+    public void reset(int width,int height){
+        image=image.resetSize(width,height);
+    }
     //    public ButtonImage newButtonImage(String fileName, ImageFormat format, int x, int y, Animator animator_hit_1, Animator animator_hit_2, Animator animator_disapear){
 //        Bitmap.Config config = null;
 //        if (format == ImageFormat.RGB565)
