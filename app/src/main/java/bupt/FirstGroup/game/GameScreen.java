@@ -1,29 +1,43 @@
 package bupt.FirstGroup.game;
 
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.util.Log;
+import android.widget.FrameLayout;
 
+import bupt.FirstGroup.GameActivity;
 import bupt.FirstGroup.MainActivity;
 import bupt.FirstGroup.framework.FileIO;
 import bupt.FirstGroup.framework.Game;
 import bupt.FirstGroup.framework.Graphics;
+import bupt.FirstGroup.framework.Image;
 import bupt.FirstGroup.framework.Input;
 import bupt.FirstGroup.framework.Music;
 import bupt.FirstGroup.framework.Screen;
 import bupt.FirstGroup.framework.Input.TouchEvent;
+import bupt.FirstGroup.framework.impl.AnimatorImage;
 import bupt.FirstGroup.framework.impl.ButtonImage;
 import bupt.FirstGroup.framework.impl.RTGame;
+import bupt.FirstGroup.framework.impl.RTGraphics;
 import bupt.FirstGroup.game.models.Ball;
+import bupt.FirstGroup.game.models.MusicPoint;
 import bupt.FirstGroup.models.Difficulty;
 
 //加载的游戏场景
@@ -70,16 +84,19 @@ public class GameScreen extends Screen {
     //结束计数器
     private int _endTicker;
     //当前音符出现时间序列（ms)
-    private ArrayList<Integer> list_LEFT;
-    private ArrayList<Integer> list_RIGHT;
+    private ArrayList<MusicPoint> list_LEFT;
+    private ArrayList<MusicPoint> list_RIGHT;
     //当前已产生的最新音符索引
     private int last_key_left =-1;
     private int last_key_right =-1;
     //从音符出现到消失所用时间
-    private int go_time;
+    private float go_time;
     //左边按钮序列
     private ArrayList<ButtonImage> list_Flower_Left;
     private ArrayList<ButtonImage> list_Flower_Right;
+    //左右最需要按下的按钮
+    ButtonImage left = null;
+    ButtonImage right= null;
 
 
     // balls
@@ -125,6 +142,10 @@ public class GameScreen extends Screen {
     private Paint _paintScore;
     //游戏结束界面
     private Paint _paintGameover;
+    //连击数显示界面
+    private Paint _paintCombo;
+    //击中精确度（0Miss,1great,2perfect）
+    private int _grade=-1;
 
     // constants
     // how far the screen should scroll after the track ends
@@ -154,6 +175,9 @@ public class GameScreen extends Screen {
 
     //游戏上下文
     private Context context;
+
+    //游戏特效资源绘制
+    ArrayList<AnimatorImage> animatorImages;
 
     GameScreen(Game game, Difficulty difficulty) {
         super(game);
@@ -199,6 +223,16 @@ public class GameScreen extends Screen {
         _paintScore.setColor(Color.WHITE);//颜色
         _paintScore.setFlags(Paint.ANTI_ALIAS_FLAG);//消除齿距
 
+        _paintCombo = new Paint();
+        _paintCombo.setTextSize(100);
+//        _paintCombo.setTextSkewX(-0.5f);
+        _paintCombo.setFakeBoldText(true);
+        _paintCombo.setTextAlign(Paint.Align.CENTER);
+        _paintCombo.setAntiAlias(true);
+        _paintCombo.setColor(Color.YELLOW);//颜色
+        _paintCombo.setFlags(Paint.ANTI_ALIAS_FLAG);//消除齿距
+        _paintCombo.setStrokeWidth(5);
+
 
         _paintGameover = new Paint();
         _paintGameover.setTextSize(50);
@@ -206,19 +240,53 @@ public class GameScreen extends Screen {
         _paintGameover.setAntiAlias(true);
         _paintGameover.setColor(Color.BLACK);
 
-        list_LEFT=new ArrayList<>();
-        for (int i=200;i<1000;i+=50){
-            list_LEFT.add(i);
+        //1.读入音谱到list_Left和list_Right中
+        try {
+            readMusicPoint(Assets.musicScore);
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        list_RIGHT=new ArrayList<>();
-        for (int i=300;i<1100;i+=50){
-            list_RIGHT.add(i);
-        }
+
         list_Flower_Left=new ArrayList<>();
         list_Flower_Right=new ArrayList<>();
         go_time=(_gameHeight)/_ballSpeed;
+        Log.i("lalala","gotime"+String.valueOf(go_time));
+
+        //特效的生成
+        animatorImages = new ArrayList<>();
     }
 
+    //读入音谱
+    public void readMusicPoint(InputStream inputStream) throws IOException {
+        DataInputStream dataIO = null;
+        try {
+            list_LEFT=new ArrayList<>();
+            list_RIGHT=new ArrayList<>();
+            dataIO = new DataInputStream(inputStream);
+            String strLine = null;
+            while((strLine=dataIO.readLine())!=null) {
+                Log.i("lalala",strLine);
+                String[] all = strLine.split("\\s+");
+                int time = Integer.parseInt(all[0]);
+                int type = Integer.parseInt(all[1]);
+                MusicPoint musicPoint = new MusicPoint(type,time);
+//                如果是左边音符
+                if (type<4){
+                    list_LEFT.add(musicPoint);
+                }else
+                    list_RIGHT.add(musicPoint);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            dataIO.close();
+            inputStream.close();
+        }
+    }
+
+    // 获取当前触摸事件，更新状态
     @Override
     public void update(float deltaTime) {
         List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
@@ -233,6 +301,7 @@ public class GameScreen extends Screen {
             updateGameOver(touchEvents);
     }
 
+    //当按下屏幕任意位置，游戏开始
     private void updateReady(List<TouchEvent> touchEvents) {
         if (touchEvents.size() > 0) {
             state = GameState.Running;
@@ -243,6 +312,7 @@ public class GameScreen extends Screen {
         }
     }
 
+    // 对触摸事件进行处理，检查是否死亡，音乐是否结束，音符位置更新
     private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {
         // 1. All touch input is handled here:
         handleTouchEvents(touchEvents);
@@ -256,30 +326,21 @@ public class GameScreen extends Screen {
         updateVariables(deltaTime);
     }
 
+    //判断音乐是否结束
     private void checkEnd() {
         if (_currentTrack.isStopped()) {
             _isEnding = true;
         }
     }
 
-    private void explosion(List<Ball> balls) {
-        Iterator<Ball> iter = balls.iterator();
-        while (iter.hasNext()) {
-            Ball b = iter.next();
-            if (b.y > EXPLOSION_TOP) {
-                iter.remove();
-                _score += 10 * _multiplier
-                        * (_doubleMultiplierTicker > 0 ? 2 : 1);
-            }
-        }
-    }
-
+    //检查是否死亡
     private void checkDeath() {
         if (_lifes <= 0) {
             endGame();
         }
     }
 
+    // To-Do:分数更新
     private void endGame() {
         state = GameState.GameOver;
         // update highscore
@@ -309,6 +370,7 @@ public class GameScreen extends Screen {
         }
     }
 
+    // 处理触摸事件
     private void handleTouchEvents(List<TouchEvent> touchEvents) {
         int len = touchEvents.size();
 
@@ -316,37 +378,21 @@ public class GameScreen extends Screen {
             TouchEvent event = touchEvents.get(i);
 
             if (event.type == TouchEvent.TOUCH_DOWN) {
+                int x = event.x;
+                int y = event.y;
 
+                //创建特效图片集
+                AnimatorImage touch = new AnimatorImage(Assets.anim1,x,y,3);
+                //加入特效列表
+                animatorImages.add(touch);
+
+                if (left!=null&&event.x>=left.getX()&&event.x<=left.getX()+left.getWidth()&&event.y>=left.getY()&&event.y<=left.getY()+left.getHeight()){
+                    hitLane(_ballsLeft,list_Flower_Left);
+                }else if (right!=null&&event.x>=right.getX()&&event.x<=right.getX()+right.getWidth()&&event.y>=right.getY()&&event.y<=right.getY()+right.getHeight()){
+                    hitLane(_ballsRight,list_Flower_Right);
                 }
             }
-//                if (event.y > 1500) {
-//                    // ball hit area
-//                    if (event.x < _gameWidth / 3) {
-//                        if (!hitLane(_ballsLeft)) {
-//                            // if no ball was hit
-//                            _laneHitAlphaLeft = MISS_FLASH_INITIAL_ALPHA;
-//                        }
-//                    }
-//                    else if (event.x < _gameWidth / 3 * 2) {
-//                        if (!hitLane(_ballsMiddle))
-//                        {
-//                            _laneHitAlphaMiddle = MISS_FLASH_INITIAL_ALPHA;
-//                        }
-//                    }
-//                    else {
-//                        if (!hitLane(_ballsRight)) {
-//                            _laneHitAlphaRight = MISS_FLASH_INITIAL_ALPHA;
-//                        }
-//                    }
-//                }
-//                else {
-//                    // pause area
-//                    touchEvents.clear();
-//                    pause();
-//                    break;
-//                }
-//            }
-
+        }
     }
 
     // update all the games variables each tick
@@ -372,33 +418,17 @@ public class GameScreen extends Screen {
             _laneHitAlphaLeft = MISS_FLASH_INITIAL_ALPHA;
         }
 
-//        if (removeMissed(_ballsMiddle.iterator())) {
-//            _laneHitAlphaMiddle = MISS_FLASH_INITIAL_ALPHA;
-//        }
 
         if (removeMissed(_ballsRight.iterator(),list_Flower_Right.iterator())) {
             _laneHitAlphaRight = MISS_FLASH_INITIAL_ALPHA;
         }
 
-//         spawn new balls
-//        if (!_isEnding && _currentTime % _spawnInterval <= deltatime) {
-//            spawnBalls();
-//        }
         if (!_isEnding) {
             spawnBalls();
         }
 
-        // decrease miss flash intensities
-        _laneHitAlphaLeft -= Math.min(_laneHitAlphaLeft, 10);
-        _laneHitAlphaMiddle -= Math.min(_laneHitAlphaMiddle, 10);
-        _laneHitAlphaRight -= Math.min(_laneHitAlphaRight, 10);
-
-        // atom explosion ticker
-//        if (_explosionTicker > 0) {
-//            explosion(_ballsLeft);
-//            explosion(_ballsMiddle);
-//            explosion(_ballsRight);
-//        }
+        //获取当前应当按下的花，放大两倍
+        resetFlower();
 
         // update tickers
         _doubleMultiplierTicker -= Math.min(1, _doubleMultiplierTicker);
@@ -414,6 +444,25 @@ public class GameScreen extends Screen {
         }
     }
 
+    //获取当前最该按下的花朵，并放大
+    void resetFlower(){
+        ButtonImage FirstFlower=null;
+        if (list_Flower_Left.size()>0){
+            FirstFlower = list_Flower_Left.get(0);
+            left=FirstFlower;
+            if (!FirstFlower.getImage().getIsrest()){
+                FirstFlower.reset(2*FirstFlower.getImage().getWidth(),2*FirstFlower.getImage().getHeight());
+            }
+        }
+        if (list_Flower_Right.size()>0){
+            FirstFlower = list_Flower_Right.get(0);
+            right=FirstFlower;
+            if (!FirstFlower.getImage().getIsrest()){
+                FirstFlower.reset(2*FirstFlower.getImage().getWidth(),2*FirstFlower.getImage().getHeight());
+            }
+        }
+    }
+
     // remove the balls from an iterator that have fallen through the hitbox
     private boolean removeMissed(Iterator<Ball> iterator,Iterator<ButtonImage> floweriter) {
         while (iterator.hasNext()) {
@@ -425,14 +474,6 @@ public class GameScreen extends Screen {
                 Log.d(TAG, "fail press");
                 onMiss(b);
             }
-//            if (b.y > HITBOX_CENTER + HITBOX_HEIGHT / 2) {
-//                iterator.remove();
-//                Log.d(TAG, "fail press");
-//                onMiss(b);
-//
-//                return b.type != Ball.BallType.Skull;
-//            }
-
         }
         return false;
     }
@@ -449,19 +490,42 @@ public class GameScreen extends Screen {
         }
         else
             return true;
-        if (Math.abs(lowestBall.y-(_gameHeight-Assets.ballNormal.getHeight()/2))<120){
+        float distance = Math.abs(lowestBall.y-_gameHeight+Assets.ballNormal.getHeight()/2);
+        Log.i("lalala","distance:"+String.valueOf(distance));
+        if (distance>=90&&distance<180){
             balls.remove(lowestBall);
             flowers.remove(lowestFlower);
             onHit(lowestBall);
+            _grade=1;
             return true;
-        }else if (Math.abs(lowestBall.y-(_gameHeight-Assets.ballNormal.getHeight()/2))>120&&Math.abs(lowestBall.y-(_gameHeight-Assets.ballNormal.getHeight()/2))<180){
+        }else if (distance>=180&&distance<=270){
             balls.remove(lowestBall);
             flowers.remove(lowestFlower);
+            _grade=0;
             onMiss(null);
             return false;
+        }else if (distance<90){
+            balls.remove(lowestBall);
+            flowers.remove(lowestFlower);
+            onHit(lowestBall);
+            _grade=2;
+            return true;
         }else{
             return true;
         }
+//        if (Math.abs(lowestBall.y-(_gameHeight-Assets.ballNormal.getHeight()/2))<120){
+//            balls.remove(lowestBall);
+//            flowers.remove(lowestFlower);
+//            onHit(lowestBall);
+//            return true;
+//        }else if (Math.abs(lowestBall.y-(_gameHeight-Assets.ballNormal.getHeight()/2))>120&&Math.abs(lowestBall.y-(_gameHeight-Assets.ballNormal.getHeight()/2))<180){
+//            balls.remove(lowestBall);
+//            flowers.remove(lowestFlower);
+//            onMiss(null);
+//            return false;
+//        }else{
+//            return true;
+//        }
 
 //        while (iter.hasNext()) {
 //            Ball b = iter.next();
@@ -486,41 +550,40 @@ public class GameScreen extends Screen {
 
     // triggers when a lane gets tapped that has currently no ball in its hitbox
     private void onMiss(Ball b) {
-//        if(b != null && b.type == Ball.BallType.Skull) {
-//            return;
-//        }
         _vibrator.vibrate(100);
         _streak = 0;
 //        _score -= Math.min(_score, 50);
         _multiplier = 1;
         --_lifes;
+        _grade=0;
 //        updateMultipliers();
     }
 
     // triggers when a lane gets tapped that currently has a ball in its hitbox
     private void onHit(Ball b) {
         _streak++;
-        switch(b.type) {
-            case OneUp: {
-                ++_lifes;
-            } break;
-            case Multiplier: {
-                _doubleMultiplierTicker = DOUBLE_MULTIPLIER_TIME;
-            } break;
-            case Bomb: {
-                _explosionTicker = EXPLOSION_TIME;
-                Assets.soundExplosion.play(0.7f);
-            } break;
-            case Skull: {
-                onMiss(null); // hitting a skull counts as a miss
-                Assets.soundCreepyLaugh.play(1);
-                return;
-            }
-        }
+//        switch(b.type) {
+//            case OneUp: {
+//                ++_lifes;
+//            } break;
+//            case Multiplier: {
+//                _doubleMultiplierTicker = DOUBLE_MULTIPLIER_TIME;
+//            } break;
+//            case Bomb: {
+//                _explosionTicker = EXPLOSION_TIME;
+//                Assets.soundExplosion.play(0.7f);
+//            } break;
+//            case Skull: {
+//                onMiss(null); // hitting a skull counts as a miss
+//                Assets.soundCreepyLaugh.play(1);
+//                return;
+//            }
+//        }
 
 //        updateMultipliers();
-        _score += 10 * _multiplier
-                * (_doubleMultiplierTicker > 0 ? 2 : 1);
+//        _score += 10 * _multiplier
+//                * (_doubleMultiplierTicker > 0 ? 2 : 1);
+        _score+=10*_grade;
     }
 
     // triggers after a touch event was handled by hitLane()
@@ -545,56 +608,47 @@ public class GameScreen extends Screen {
         }
     }
 
+    //生成音符
     private void spawnBalls() {
-        if (last_key_left+1<list_LEFT.size()&&_currentTime+go_time>=list_LEFT.get(last_key_left+1)){
+        while (last_key_left+1<list_LEFT.size()&&_currentTime+go_time>=list_LEFT.get(last_key_left+1).getTime()){
             int x = (_gameWidth/2-Assets.placeholder.getWidth()*4/10+_gameWidth/2-Assets.placeholder.getWidth()/10)/2;
             int y = -Assets.ballNormal.getHeight()/2;
-            Log.i("lalala","ball:x-"+String.valueOf(x)+"\nplaceholder:x-"+String.valueOf(Assets.placeholder.getWidth()/2));
-            spawnBall(_ballsLeft,x,y);
+            Log.i("lalala","ball:y-"+String.valueOf(y)+"\nplaceholder:x-"+String.valueOf(Assets.placeholder.getWidth()/2));
+            spawnBall(_ballsLeft,x,y,list_LEFT.get(last_key_left+1).getType(), _currentTime+go_time);
             x = _rand.nextInt(_gameWidth/4);
             spawnFlower(list_Flower_Left,x);
             last_key_left++;
         }
-        if (last_key_right+1<list_RIGHT.size()&&_currentTime+go_time>=list_RIGHT.get(last_key_right+1)){
+        while (last_key_right+1<list_RIGHT.size()&&_currentTime+go_time>=list_RIGHT.get(last_key_right+1).getTime()){
             int x = (_gameWidth/2+Assets.placeholder.getWidth()*4/10+_gameWidth/2+Assets.placeholder.getWidth()/10)/2;
             int y = -Assets.ballNormal.getHeight()/2;
-            spawnBall(_ballsRight,x,y);
-            x = _gameWidth/4*3+_rand.nextInt(_gameWidth/4);
+            spawnBall(_ballsRight,x,y,list_RIGHT.get(last_key_right+1).getType(), _currentTime+go_time);
+            x = _gameWidth/4*3+_rand.nextInt(_gameWidth/4)-Assets.flower_key1.getWidth();
             spawnFlower(list_Flower_Right,x);
             last_key_right++;
         }
     }
 
-    private void spawnBall(List<Ball>balls, int ballX, int ballY){
-        balls.add(new Ball(ballX, ballY, Ball.BallType.Normal));
+    //生成单个音符
+    private void spawnBall(List<Ball>balls, int ballX, int ballY, int type,float time){
+        balls.add(new Ball(ballX, ballY, type, time));
     }
 
+    //生成花朵
     private void spawnFlower(List<ButtonImage>flowers,int x){
         int y = Assets.toprect.getHeight()+_rand.nextInt(_gameHeight/3*2);
-        ButtonImage btn = new ButtonImage(Assets.flower_key1,Assets.flower_key1.getFormat(),x,y,null,null,null);
+        Graphics g = game.getGraphics();
+        Image image = g.newImage("img/flower_key_1.png",Graphics.ImageFormat.ARGB4444);
+        ButtonImage btn = new ButtonImage(image,image.getFormat(),x,y,null,null,null);
         flowers.add(btn);
     }
 
-    private void spawnBall(List<Ball> balls, float randFloat, int ballX, int ballY) {
-        if (randFloat < _spawnChance_normal) {
-            balls.add(0, new Ball(ballX, ballY, Ball.BallType.Normal));
-        } else if (randFloat < _spawnChance_oneup) {
-            balls.add(0, new Ball(ballX, ballY, Ball.BallType.OneUp));
-        } else if (randFloat < _spawnChance_multiplier) {
-            balls.add(0, new Ball(ballX, ballY, Ball.BallType.Multiplier));
-        } else if (randFloat < _spawnChance_speeder) {
-            balls.add(0, new Ball(ballX, ballY, Ball.BallType.Speeder));
-        } else if (randFloat < _spawnChance_bomb) {
-            balls.add(0, new Ball(ballX, ballY, Ball.BallType.Bomb));
-        } else if (randFloat < _spawnChance_skull) {
-            balls.add(0, new Ball(ballX, ballY, Ball.BallType.Skull));
-        }
-    }
-
+    //暂停状态
     private void updatePaused(List<TouchEvent> touchEvents) {
         if (_currentTrack.isPlaying()) {
             _currentTrack.pause();
         }
+
 
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
@@ -606,6 +660,7 @@ public class GameScreen extends Screen {
         }
     }
 
+    //To-do:结束界面
     private void updateGameOver(List<TouchEvent> touchEvents) {
         if (!_currentTrack.isStopped()) {
             _currentTrack.stop();
@@ -628,21 +683,15 @@ public class GameScreen extends Screen {
 
     }
 
+    //每一帧的绘制函数
     @Override
     public void paint(float deltaTime) {
         Graphics g = game.getGraphics();
         // First draw the game elements.
         // Example:
-        g.drawScaledImage(Assets.background, 0, 0,_gameWidth,_gameHeight,0,0,Assets.background.getWidth(),Assets.background.getHeight());
+        g.drawScaledImage(Assets.background, 0, 0,_gameWidth,_gameHeight,10,10,Assets.background.getWidth()-10,Assets.background.getHeight()-10);
         g.drawImage(Assets.placeholder,_gameWidth/2-Assets.placeholder.getWidth()/2,0);
 
-//        g.drawRect(0,0,_gameWidth/2-1,_gameHeight,Color.argb(_laneHitAlphaLeft,255,0,0));
-//        g.drawRect(0,0,_gameWidth/2+1,_gameHeight,Color.argb(_laneHitAlphaLeft,255,0,0));
-
-        //音轨变红色
-//        g.drawRect(0                 , 0, _gameWidth / 3 + 1, _gameHeight, Color.argb(_laneHitAlphaLeft, 255, 0, 0));
-//        g.drawRect(_gameWidth / 3    , 0, _gameWidth / 3 + 1, _gameHeight, Color.argb(_laneHitAlphaMiddle, 255, 0, 0));
-//        g.drawRect(_gameWidth / 3 * 2, 0, _gameWidth / 3 + 1, _gameHeight, Color.argb(_laneHitAlphaRight, 255, 0, 0));
         /*球击中的位置*/
         g.drawImage(Assets.scale, _gameWidth / 2 - (Assets.placeholder.getWidth() / 20 * 9), _gameHeight-Assets.scale.getHeight());
         g.drawImage(Assets.scale, _gameWidth / 2 + Assets.placeholder.getWidth() / 19, _gameHeight-Assets.scale.getHeight());
@@ -651,10 +700,6 @@ public class GameScreen extends Screen {
         for (Ball b: _ballsLeft) {
             paintBall(g, b);
         }
-
-//        for (Ball b: _ballsMiddle) {
-//            paintBall(g, b);
-//        }
 
         for (Ball b: _ballsRight) {
             paintBall(g, b);
@@ -668,15 +713,7 @@ public class GameScreen extends Screen {
             paintFlower(g,b);
         }
 
-
-        if (_explosionTicker > 0) {
-            if (_rand.nextDouble() > 0.05) {
-                g.drawImage(Assets.explosion, 0, 680);
-            } else {
-                g.drawImage(Assets.explosionBright, 0, 680);
-            }
-            g.drawARGB((int)((double)_explosionTicker/EXPLOSION_TIME * 255), 255, 255, 255);
-        }
+        drawAllAnimator(g, animatorImages);
 
         // Secondly, draw the UI above the game elements.
         if (state == GameState.Ready)
@@ -689,32 +726,53 @@ public class GameScreen extends Screen {
             drawGameOverUI();
     }
 
+    private void drawAllAnimator(Graphics g, ArrayList<AnimatorImage> animatorImages){
+        ArrayList<Integer> remove =new ArrayList<>();
+        int i=0;
+        for (AnimatorImage anim:animatorImages){
+            if (anim.getI()<anim.getMax_i()){
+                int half_x = anim.getAnim1(0).getWidth()/2;
+                int half_y = anim.getAnim1(0).getHeight()/2;
+                g.drawImage(anim.getAnim1(anim.getI()),anim.getX()-half_x,anim.getY()-half_y);
+                anim.setI(anim.getI()+anim.getSpeed());
+            }else{
+                remove.add(i);
+            }
+            i++;
+        }
+
+        for (Integer j:remove){
+            animatorImages.remove(j);
+        }
+    }
+
+    //绘制音符的位置
     private void paintBall(Graphics g, Ball b) {
         switch(b.type) {
-            case Normal:
+            case 1:
+            case 4:
                 g.drawImage(Assets.ballNormal, b.x - Assets.ballNormal.getWidth()/2, b.y-Assets.ballNormal.getHeight()/2);
                 break;
-            case OneUp:
+            case 2:
                 g.drawImage(Assets.ballOneUp, b.x - 90, b.y - 90);
                 break;
-            case Multiplier:
+            case 3:
                 g.drawImage(Assets.ballMultiplier, b.x - 90, b.y - 90);
                 break;
-            case Speeder:
-                g.drawImage(Assets.ballSpeeder, b.x - 90, b.y - 90);
-                break;
-            case Bomb:
+            case 5:
                 g.drawImage(Assets.ballBomb,  b.x - 90, b.y - 90);
                 break;
-            case Skull:
+            case 6:
                 g.drawImage(Assets.ballSkull, b.x - 90, b.y - 90);
                 break;
         }
     }
 
+    //绘制花朵
     private void paintFlower(Graphics g, ButtonImage b){
-        g.drawImage(Assets.flower_key1, b.getX(),b.getY());
+        g.drawImage(b.getImage(), b.getX(),b.getY());
     }
+
     private void nullify() {
 
         // Set all variables to null. You will be recreating them in the
@@ -725,6 +783,7 @@ public class GameScreen extends Screen {
         System.gc();
     }
 
+    //绘制准备界面
     private void drawReadyUI() {
         Graphics g = game.getGraphics();
 
@@ -732,6 +791,7 @@ public class GameScreen extends Screen {
         g.drawString("Tap to start!", _gameWidth / 2, _gameHeight / 2, _paintScore);
     }
 
+    //绘制运行界面
     private void drawRunningUI() {
         Graphics g = game.getGraphics();
         g.drawImage(Assets.toprect,_gameWidth/2-Assets.toprect.getWidth()/2,0);
@@ -742,27 +802,42 @@ public class GameScreen extends Screen {
 //                Assets.toprect.getHeight() / 3);
         //hy version
         g.drawScaledImage(Assets.hpframe,_gameWidth/192,Assets.toprect.getHeight()/5,_gameWidth/4,Assets.toprect.getHeight()/2,0,0,Assets.hpframe.getWidth(),Assets.hpframe.getHeight());
-        g.drawScaledImage(Assets.hp,_gameWidth/192,Assets.toprect.getHeight()/5,_gameWidth/4,Assets.toprect.getHeight()/2,0,0,Assets.hp.getWidth(),Assets.hp.getHeight());
+        g.drawScaledImage(Assets.hp,_gameWidth/192,Assets.toprect.getHeight()/5,
+                _gameWidth/4-(10-_lifes)*_gameWidth/40,Assets.toprect.getHeight()/2,
+                      0,0,Assets.hp.getWidth()-(10-_lifes)*Assets.hp.getWidth()/10,Assets.hp.getHeight());
 
 //        g.drawImage(Assets.hpframe,Assets.placeholder.getWidth()/8,Assets.toprect.getHeight()/3);
 //        g.drawImage(Assets.hp,Assets.placeholder.getWidth()/8,Assets.toprect.getHeight()/3);
         g.drawImage(Assets.score,_gameWidth/2+Assets.placeholder.getWidth(),Assets.toprect.getHeight()/6);
         g.drawImage(Assets.pause,_gameWidth/2-Assets.pause.getWidth()/2,0);
 
-        if (_doubleMultiplierTicker > 0) {
-            g.drawImage(Assets.sirens, 0, 100);
-        }
+//        if (_doubleMultiplierTicker > 0) {
+//            g.drawImage(Assets.sirens, 0, 100);
+//        }
         g.drawString(String.valueOf(_score),
                 _gameWidth / 2 + Assets.placeholder.getWidth() + Assets.score.getWidth()+70,
                 Assets.toprect.getHeight() - Assets.hp.getHeight(), _paintScore);
-//        g.drawRect(0, 0, _gameWidth, 100, Color.BLACK);
-//
-//        String s = "Score: " + _score +
-//                "   Multiplier: " + _multiplier * (_doubleMultiplierTicker > 0 ? 2 : 1) + "x" +
-//                "   Lifes remaining: " + _lifes;
-//        g.drawString(s, 600, 80, _paintScore);
+
+        g.drawImage(Assets.combo,_gameWidth/2-Assets.combo.getWidth()/2,Assets.toprect.getHeight()+20);
+        g.drawString(String.valueOf(_streak),_gameWidth/2,Assets.toprect.getHeight()+Assets.combo.getHeight()+100,_paintCombo);
+
+        if (_grade!=-1){
+            switch (_grade){
+                case 0:
+                    g.drawImage(Assets.miss,_gameWidth/2-Assets.miss.getWidth()/2,Assets.toprect.getHeight()+Assets.combo.getHeight()+100);
+                    break;
+                case 1:
+                    g.drawImage(Assets.great,_gameWidth/2-Assets.great.getWidth()/2,Assets.toprect.getHeight()+Assets.combo.getHeight()+100);
+                    break;
+                case 2:
+                    g.drawImage(Assets.perfect,_gameWidth/2-Assets.perfect.getWidth()/2,Assets.toprect.getHeight()+Assets.combo.getHeight()+100);
+                    break;
+            }
+
+        }
     }
 
+    //绘制暂停界面
     private void drawPausedUI() {
         Graphics g = game.getGraphics();
 //        g.drawARGB(155, 0, 0, 0);
@@ -770,6 +845,7 @@ public class GameScreen extends Screen {
 //        g.drawString("TAP TO CONTINUE", 540, 845, _paintGameover);
     }
 
+    //绘制游戏结束UI
     private void drawGameOverUI() {
         Graphics g = game.getGraphics();
         g.drawARGB(205, 0, 0, 0);
@@ -777,15 +853,16 @@ public class GameScreen extends Screen {
         g.drawString("FINAL SCORE: " + _score, 540, 845, _paintGameover);
     }
 
+    //绘制暂停界面
     @Override
     public void pause() {
         if (state == GameState.Running) {
             state = GameState.Paused;
             _currentTrack.pause();
         }
-
     }
 
+    //绘制恢复界面
     @Override
     public void resume() {
         if (state == GameState.Paused) {

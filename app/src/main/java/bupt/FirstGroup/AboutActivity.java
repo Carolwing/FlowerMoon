@@ -1,11 +1,10 @@
 package bupt.FirstGroup;
 
-import androidx.appcompat.app.AppCompatActivity;
-import android.app.ListActivity;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.ListView;
 
-import java.util.List;
+import androidx.appcompat.app.AppCompatActivity;
 
 import bupt.FirstGroup.helpers.BallDataAdapter;
 import bupt.FirstGroup.models.BallData;
@@ -17,6 +16,7 @@ public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         this._listView = (ListView)this.findViewById(R.id.about_list);
         BallDataAdapter data = new BallDataAdapter(this);
 

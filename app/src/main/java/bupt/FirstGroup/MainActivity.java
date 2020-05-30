@@ -17,7 +17,7 @@ import bupt.FirstGroup.entity.CurrentUser;
 import bupt.FirstGroup.entity.Record;
 import bupt.FirstGroup.models.Difficulty;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ImageButton strat_btn;
     private ImageButton highscore_btn;
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private final Difficulty _diffEasy =
-            new Difficulty(Difficulty.EASY_TAG, "Spyro_Year_of_the_Dragon_Acoustic_Fields_OC_ReMix.mp3", 115f / 2, 8);
+            new Difficulty(Difficulty.EASY_TAG, "easy.mp3", 115f/2, 8,"easy.txt");
     private final Difficulty _diffMid =
             new Difficulty(Difficulty.MED_TAG, "super_meat_boy_power_of_the_meat.mp3", 128, 10);
     private final Difficulty _diffHard =
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         strat_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, DifficultySelectionActivity.class);
+                Intent i=new Intent(MainActivity.this,ImageAnimation.class);//记得改回来！！！这里只是一个测试
                 MainActivity.this.startActivity(i);
             }
         });
