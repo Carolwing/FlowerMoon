@@ -23,12 +23,12 @@
     <string name="about_ball_oneup_title">One up</string>
     <string name="about_ball_skull_title">Totenschädel</string>
 
-    <string name="about_us">RhythmTapper - a game brought to you from Peter Schmidbauer and Andreas Lobmaier with love. xoxo</string>
-    <string name="about_title">Balltypen</string>
-    <string name="about_ball_normal_content">Keine spezielle Fähigkeit, bringt Punkte</string>
-    <string name="about_ball_bomb_content">Zerstört alle kommenden Bälle für eine gewisse Zeit und zählt deren Punkte zum Punktestand.</string>
-    <string name="about_ball_multiplier_content">Verdoppelt den Multiplikator</string>
-    <string name="about_ball_speeder_content">Doppelt so schnell als normale Bälle</string>
-    <string name="about_ball_oneup_content">Erhöht die Anzahl der Leben um 1</string>
-    <string name="about_ball_skull_content">Verringert die Anzahl der Leben um 1</string>
+    <string name="about_us">开发人员：\n黄莹，高晨熙，唐可欣，罗舒婷，李浙铭</string>
+    <string name="about_title">音符介绍</string>
+    <string name="about_ball_normal_content">普通音符，无特殊效果。</string>
+    <string name="about_ball_bomb_content">在一定时间内摧毁所有进入的球，并将其得分作为得分。</string>
+    <string name="about_ball_multiplier_content">倍增</string>
+    <string name="about_ball_speeder_content">比普通球快一倍</string>
+    <string name="about_ball_oneup_content">增加1条生命</string>
+    <string name="about_ball_skull_content">减少1条生命</string>
 </resources>
