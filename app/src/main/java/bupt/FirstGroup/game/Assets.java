@@ -9,6 +9,8 @@ import bupt.FirstGroup.framework.Sound;
 import bupt.FirstGroup.framework.impl.ButtonImage;
 
 class Assets {
+    //特效资源图集
+    static Image[] anim1;//触摸波纹
     // Graphics
     static Image background;
     static Image gameover;

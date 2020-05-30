@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import bupt.FirstGroup.framework.Game;
 import bupt.FirstGroup.framework.Graphics;
+import bupt.FirstGroup.framework.Image;
 import bupt.FirstGroup.framework.Screen;
 import bupt.FirstGroup.framework.impl.RTGame;
 import bupt.FirstGroup.models.Difficulty;
@@ -18,6 +19,7 @@ public class LoadingScreen extends Screen {
     private static final String SOUND_EFFECTS_PATH = "audio/";
     private static final String MUSIC_PATH = "music/";
     private static final String MUSIC_SCORE_PATH= "musicScore/";
+    private static final String ANIM_PATH = "Animator/";
 
 
     public LoadingScreen(Game game, Difficulty difficulty) {
@@ -30,7 +32,10 @@ public class LoadingScreen extends Screen {
     public void update(float deltaTime) {
         Graphics g = game.getGraphics();
         //加载特效资源，暂空
-
+        Assets.anim1 = new Image[32];
+        for (int i=0;i<32;i++){
+            Assets.anim1[i]=g.newImage(ANIM_PATH+"click_screen"+String.valueOf(i+1)+".png",Graphics.ImageFormat.ARGB4444);
+        }
         //加载按钮资源
         Assets.flower_key1=g.newImage(IMAGE_PATH+"flower_key_1.png",Graphics.ImageFormat.ARGB4444);
 
