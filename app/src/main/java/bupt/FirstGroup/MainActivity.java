@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import bupt.FirstGroup.entity.CurrentUser;
+import bupt.FirstGroup.entity.Record;
 import bupt.FirstGroup.models.Difficulty;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.level3_btn.setOnClickListener(this);
         showuser.setText("欢迎 "+CurrentUser.getName());
         showuser.setTextColor(Color.WHITE);
+        Record record = new Record(500,1);
+        showuser.append(record.toString());
 
 
 

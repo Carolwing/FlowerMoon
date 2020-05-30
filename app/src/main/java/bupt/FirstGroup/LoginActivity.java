@@ -16,6 +16,7 @@ import android.os.Looper;
 import android.util.Log;
 
 import bupt.FirstGroup.entity.CurrentUser;
+import bupt.FirstGroup.entity.Record;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "TRY";
@@ -31,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         name = findViewById(R.id.name);
         password = findViewById(R.id.password);
         phoneNumber = findViewById(R.id.phone);
+
 
         login_btn = (ImageButton) findViewById(R.id.login);
         register_btn = (ImageButton) findViewById(R.id.register);
@@ -127,11 +129,11 @@ public class LoginActivity extends AppCompatActivity {
                         System.out.println(result.equals("登录成功"));
                         if(result.equals("登录成功")){
                             //一下代码为跳转界面
-                            Looper.myLooper().quit();
                             CurrentUser.setName(n);
                             System.out.println(CurrentUser.getName());
                             Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                             //intent.putExtra("name",n);
+                            Looper.myLooper().quit();
                             startActivity(intent);
                             LoginActivity.this.finish();
                         }
