@@ -92,11 +92,9 @@ public class LoginActivity extends AppCompatActivity {
                         toast.show();
                         if (result.equals("注册成功")) {
                             //一下代码为跳转界面
-                            Looper.myLooper().quit();
                             CurrentUser.setName(n);
                             System.out.println(CurrentUser.getName());
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            //intent.putExtra("name",n);
                             startActivity(intent);
                             LoginActivity.this.finish();
                         }
@@ -129,7 +127,6 @@ public class LoginActivity extends AppCompatActivity {
                             CurrentUser.setName(n);
                             System.out.println(CurrentUser.getName());
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            Looper.myLooper().quit();
                             startActivity(intent);
                             LoginActivity.this.finish();
                         }
