@@ -3,19 +3,20 @@ package bupt.FirstGroup;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.content.SharedPreferences;
 
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.TextView;
-
 
 
 public class HighscoreActivity extends AppCompatActivity {
     public static String PREF_FILE = "HighscorePrefFile";
-    public static String[] result1 = new String[4];
-    public static String[] result2 = new String[4];
-    public static String[] result3 = new String[4];
+    private ImageButton goBack;
     private SharedPreferences _prefs;
 
     /* views */
@@ -36,7 +37,7 @@ public class HighscoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_highscore);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        goBack = (ImageButton) findViewById(R.id.im3);
         item[0][0] = (TextView) this.findViewById(R.id.tv_score1);
         item[1][0] = (TextView) this.findViewById(R.id.tv_score2);
         item[2][0] = (TextView) this.findViewById(R.id.tv_score3);
@@ -48,6 +49,28 @@ public class HighscoreActivity extends AppCompatActivity {
         item[2][2] = (TextView) this.findViewById(R.id.tv_name3);
         System.out.println("2.1)HighScoreActivity.WorldRank.getString : " + WorldRank.getString());
         System.out.println("2.2)WorldRank.result[2][1]" + WorldRank.result[2][1]);
+
+        goBack.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {//点击按钮
+                    //重新设置按下去时的按钮图片
+                    ((ImageButton) v).setImageDrawable(getResources().getDrawable(R.mipmap.xx1));
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {//松开按钮
+                    //再修改为正常抬起时的图片
+                    ((ImageButton) v).setImageDrawable(getResources().getDrawable(R.mipmap.xx2));
+                }
+                return false;
+            }
+        });
+
+        goBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HighscoreActivity.this, MainActivity.class);
+                HighscoreActivity.this.startActivity(intent);
+            }
+        });
 
         HighscoreActivity.this.runOnUiThread(new Runnable() {
             @Override
