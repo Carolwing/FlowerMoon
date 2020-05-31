@@ -10,6 +10,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import bupt.FirstGroup.entity.CurrentUser;
 import bupt.FirstGroup.models.Difficulty;
 
@@ -61,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         highscore_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast toast = Toast.makeText(MainActivity.this, "查询世界记录中，请稍后", Toast.LENGTH_SHORT);
+                toast.show();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
