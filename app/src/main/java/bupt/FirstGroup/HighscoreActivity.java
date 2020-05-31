@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.widget.TextView;
 
 
+
 public class HighscoreActivity extends AppCompatActivity {
     public static String PREF_FILE = "HighscorePrefFile";
     public static String[] result1 = new String[4];
@@ -33,15 +34,6 @@ public class HighscoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_highscore);
 
-        _easyTxtView = (TextView) this.findViewById(R.id.tv_score1);
-        _medTxtView = (TextView) this.findViewById(R.id.tv_score2);
-        _hardTxtView = (TextView) this.findViewById(R.id.tv_score3);
-        time1 = (TextView) this.findViewById(R.id.tv_time1);
-        time2 = (TextView) this.findViewById(R.id.tv_time2);
-        time3 = (TextView) this.findViewById(R.id.tv_time3);
-        u1 = (TextView) this.findViewById(R.id.tv_name1);
-        u2 = (TextView) this.findViewById(R.id.tv_name2);
-        u3 = (TextView) this.findViewById(R.id.tv_name3);
         item[0][0] = (TextView) this.findViewById(R.id.tv_score1);
         item[1][0] = (TextView) this.findViewById(R.id.tv_score2);
         item[2][0] = (TextView) this.findViewById(R.id.tv_score3);
@@ -53,13 +45,19 @@ public class HighscoreActivity extends AppCompatActivity {
         item[2][2] = (TextView) this.findViewById(R.id.tv_name3);
         System.out.println("2.1)HighScoreActivity.WorldRank.getString : " + WorldRank.getString());
         System.out.println("2.2)WorldRank.result[2][1]" + WorldRank.result[2][1]);
-        String[][] print = WorldRank.getResult();
-        for (int i = 0; i < item.length; i++) {
-            for (int j = 0; j < item[i].length; j++) {
-                System.out.println("3.1)SetText.item[" + i + "][" + j + "]:" + print[i][j]);
-                item[i][j].setText(print[i][j]);
+
+        HighscoreActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String[][] print = WorldRank.getResult();
+                for (int i = 0; i < item.length; i++) {
+                    for (int j = 0; j < item[i].length; j++) {
+                        System.out.println("3.1)runOnUiThread SetText.item[" + i + "][" + j + "]:" + print[i][j]);
+                        item[i][j].setText(print[i][j]);
+                    }
+                }
             }
-        }
+        });
     }
 
 }

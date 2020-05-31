@@ -15,7 +15,7 @@ public class WorldRank {
     public static String[][] result = new String[3][4];
 
     public static void setResult(String[][] r) {
-        WorldRank.result = r;
+        result = r;
     }
 
     public static String[][] getResult() {
