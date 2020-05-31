@@ -51,83 +51,15 @@ public class HighscoreActivity extends AppCompatActivity {
         item[0][2] = (TextView) this.findViewById(R.id.tv_name1);
         item[1][2] = (TextView) this.findViewById(R.id.tv_name2);
         item[2][2] = (TextView) this.findViewById(R.id.tv_name3);
-        // load highscores
-        //_prefs = PreferenceManager.getDefaultSharedPreferences(this);
-/*
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                DBConnection db = new DBConnection();
-                result1 = db.findMaxScore(1);
-                _easyTxtView.setText(result1[1]);
-                time1.setText(result1[0]);
-                u1.setText(result1[2]);
-                result2 = db.findMaxScore(2);
-                _medTxtView.setText(result2[1]);
-                time2.setText(result2[0]);
-                u2.setText(result2[2]);
-                result3 = db.findMaxScore(3);
-                _hardTxtView.setText(result3[1]);
-                time3.setText(result3[0]);
-                u3.setText(result3[2]);
-
-            }
-        }).start();
-
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                DBConnection db = new DBConnection();
-                System.out.println(" worldrank");
-                String[] r1=db.findMaxScore(1);
-                String[] r2=db.findMaxScore(2);
-                String[] r3=db.findMaxScore(3);
-                System.out.println(" worldrank "+r1[2]+r2[2]);
-                WorldRank.setResult(new String[][]{r1, r2, r3});
-            }
-        }).start();
-
-
-
+        System.out.println("2.1)HighScoreActivity.WorldRank.getString : " + WorldRank.getString());
+        System.out.println("2.2)WorldRank.result[2][1]" + WorldRank.result[2][1]);
         String[][] print = WorldRank.getResult();
         for (int i = 0; i < item.length; i++) {
             for (int j = 0; j < item[i].length; j++) {
-                System.out.println("End of thread result["+i+"]["+j+"]:"+print[i][j]);
-                //item[i][j].setText(print[i][j]);
+                System.out.println("3.1)SetText.item[" + i + "][" + j + "]:" + print[i][j]);
+                item[i][j].setText(print[i][j]);
             }
         }
-
-*/
-        //_easyTxtView.setText(easyMode);
-        // _medTxtView.setText(mediumMode);
-        // _hardTxtView.setText(hardMode);
-        HighscoreActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        DBConnection db = new DBConnection();
-                        System.out.println(" worldrank");
-                        String[] r1 = db.findMaxScore(1);
-                        String[] r2 = db.findMaxScore(2);
-                        String[] r3 = db.findMaxScore(3);
-                        System.out.println(" worldrank " + r1[2] + r2[2]);
-                        WorldRank.setResult(new String[][]{r1, r2, r3});
-                        System.out.println(WorldRank.result[2][1] + " --WorldRank.result[2][1] in Run");
-                        String[][] print = WorldRank.getResult();
-                        for (int i = 0; i < item.length; i++) {
-                            for (int j = 0; j < item[i].length; j++) {
-                                System.out.println("End of thread result[" + i + "][" + j + "]:" + print[i][j]);
-                                item[i][j].setText(print[i][j]);
-                            }
-                        }
-                    }
-                }).start();
-
-            }
-        });
-
     }
+
 }

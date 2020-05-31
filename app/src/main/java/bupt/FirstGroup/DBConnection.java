@@ -173,7 +173,7 @@ public class DBConnection {
                 }
             }
         }
-        System.out.println(resultString[1]+"findMaxScore");
+        System.out.println("1.1)findMaxScore(" + grade + "):" + resultString[1]);
         return resultString;
     }
 }

@@ -65,8 +65,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         highscore_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, HighscoreActivity.class);
-                MainActivity.this.startActivity(i);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DBConnection db = new DBConnection();
+                        System.out.println("1.0)MainActivity.new Thread");
+                        String[] r1 = db.findMaxScore(1);
+                        String[] r2 = db.findMaxScore(2);
+                        String[] r3 = db.findMaxScore(3);
+                        // System.out.println(" worldrank "+r1[2]+r2[2]);
+                        System.out.println("1.2)WorldRank.setString");
+                        WorldRank.setResult(new String[][]{r1, r2, r3});
+                        System.out.println("1.3)WorldRank.result[2][1]" + WorldRank.result[2][1]);
+                        System.out.println("1.4)MainActivity.this.startActivity(i)");
+                        Intent i = new Intent(MainActivity.this, HighscoreActivity.class);
+                        MainActivity.this.startActivity(i);
+                    }
+                }).start();
             }
         });
 
@@ -78,14 +93,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        /*
-        level1_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i=new Intent(MainActivity.this,ImageAnimation.class);
-                MainActivity.this.startActivity(i);
-            }
-        });*/
 
         strat_btn.setOnTouchListener(new View.OnTouchListener() {
             @Override
