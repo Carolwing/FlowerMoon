@@ -23,6 +23,7 @@ import android.renderscript.Sampler;
 import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import bupt.FirstGroup.GameActivity;
 import bupt.FirstGroup.MainActivity;
@@ -183,7 +184,7 @@ public class GameScreen extends Screen {
 
     GameScreen(Game game, Difficulty difficulty) {
         super(game);
-//        context=game.get();
+//        context=game.
 
         _difficulty = difficulty;
         // init difficulty parameters
@@ -697,20 +698,45 @@ public class GameScreen extends Screen {
     //To-do:结束界面
     private void updateGameOver(List<TouchEvent> touchEvents) {
         if (!_currentTrack.isStopped()) {
-            _currentTrack.stop();
+            _currentTrack.pause();
         }
 
+        boolean success = _lifes>0;
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
             TouchEvent event = touchEvents.get(i);
             if (event.type == TouchEvent.TOUCH_UP) {
-                if (event.x > 300 && event.x < 540 && event.y > 845
-                        && event.y < 1100) {
+                if (event.x > first.getX() && event.x < first.getX()+first.getWidth()
+                        && event.y > first.getY() && event.y < first.getY()+first.getHeight()) {
+                    if (success) {
+                        //进行下一关
+                        //获取当前等级
+                        String TAG = _difficulty.getMode();
+                        Difficulty next = _difficulty;
+                        switch (TAG){
+                            case Difficulty.EASY_TAG:
+                                next = new Difficulty(Difficulty.MED_TAG, "super_meat_boy_power_of_the_meat.mp3", 128, 10,"easy.txt");
+                                break;
+                            case Difficulty.MED_TAG:
+                                next = new Difficulty(Difficulty.HARD_TAG, "high.mp3", 180, 15,"high.txt");
+                                break;
+                            case Difficulty.HARD_TAG:
+                                //通关页面
+                                game.goToActivity(MainActivity.class);
+                                break;
+                        }
+                        game.setScreen(new LoadingScreen(game, next));
+//                        game.goToActivity(MainActivity.class);
+//                        return;
+                    }else{
+                        //满血复活
+                        state = GameState.Paused;
+                        _lifes=10;
+                        resume();
+                    }
+                } else if (event.x >= second.getX() && event.x < second.getX()+second.getWidth()
+                        && event.y > second.getY() && event.y < second.getY()+second.getHeight()) {
                     game.goToActivity(MainActivity.class);
-                    return;
-                } else if (event.x >= 540 && event.x < 780 && event.y > 845
-                        && event.y < 1100) {
-                    game.setScreen(new LoadingScreen(game, _difficulty));
                 }
             }
         }
