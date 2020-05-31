@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton level2_btn;
     private ImageButton level3_btn;
     private TextView showuser;
+    private Button button;
 
 
     private final Difficulty _diffEasy =
@@ -50,6 +52,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.level3_btn.setOnClickListener(this);
         showuser.setText("欢迎 " + CurrentUser.getName());
         showuser.setTextColor(Color.WHITE);
+        button = findViewById(R.id.button);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                MainActivity.this.startActivity(i);
+            }
+        });
 
 
         strat_btn.setOnClickListener(new View.OnClickListener() {

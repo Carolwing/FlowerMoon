@@ -81,6 +81,7 @@
             android:layout_marginLeft="30dp"
             android:background="@mipmap/start_btn1" />
 
+
         <ImageButton
             android:id="@+id/main_highscore_button"
             android:layout_width="wrap_content"
@@ -90,6 +91,12 @@
             android:background="@mipmap/score1" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="注销" />
 
 
 </LinearLayout>
