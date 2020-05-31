@@ -38,6 +38,16 @@ public class LoadingScreen extends Screen {
         }
         //加载按钮资源
         Assets.flower_key1=g.newImage(IMAGE_PATH+"flower_key_1.png",Graphics.ImageFormat.ARGB4444);
+        //结束界面
+        //结束界面背景
+        Assets.score_bg= g.newImage(IMAGE_PATH+"score_bg.png",Graphics.ImageFormat.ARGB4444);
+        //结束界面结果
+        Assets.success= g.newImage(IMAGE_PATH+"success.png",Graphics.ImageFormat.ARGB4444);
+        Assets.fail= g.newImage(IMAGE_PATH+"fail.png",Graphics.ImageFormat.ARGB4444);
+        //结束界面按钮
+        Assets.return_= g.newImage(IMAGE_PATH+"return.png",Graphics.ImageFormat.ARGB4444);
+        Assets.continue_= g.newImage(IMAGE_PATH+"continue.png",Graphics.ImageFormat.ARGB4444);
+        Assets.resume_= g.newImage(IMAGE_PATH+"resume.png",Graphics.ImageFormat.ARGB4444);
 
         //加载其他资源
         Assets.combo=g.newImage(IMAGE_PATH+"combo.png",Graphics.ImageFormat.ARGB4444);
