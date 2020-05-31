@@ -27,8 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton level2_btn;
     private ImageButton level3_btn;
     private TextView showuser;
-    private Button button;
-
+    private ImageButton button;
 
     private final Difficulty _diffEasy =
             new Difficulty(Difficulty.EASY_TAG, "easy.mp3", 115f/2, 8,"easy.txt");
