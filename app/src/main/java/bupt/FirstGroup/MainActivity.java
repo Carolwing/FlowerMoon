@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import bupt.FirstGroup.entity.CurrentUser;
-import bupt.FirstGroup.entity.Record;
 import bupt.FirstGroup.models.Difficulty;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -28,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton level2_btn;
     private ImageButton level3_btn;
     private TextView showuser;
-
+    private ImageButton button;
 
     private final Difficulty _diffEasy =
             new Difficulty(Difficulty.EASY_TAG, "easy.mp3", 115f/2, 8,"easy.txt");
@@ -56,6 +55,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.level3_btn.setOnClickListener(this);
         showuser.setText("欢迎 " + CurrentUser.getName());
         showuser.setTextColor(Color.WHITE);
+        button = findViewById(R.id.button);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                MainActivity.this.startActivity(i);
+            }
+        });
 
 
         strat_btn.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +77,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         highscore_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this,"查询世界记录中，请稍后……",Toast.LENGTH_LONG).show();
+                Toast toast = Toast.makeText(MainActivity.this, "查询世界记录中，请稍后", Toast.LENGTH_SHORT);
+                toast.show();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -81,6 +82,7 @@
             android:layout_marginLeft="30dp"
             android:background="@mipmap/start_btn1" />
 
+
         <ImageButton
             android:id="@+id/main_highscore_button"
             android:layout_width="wrap_content"
@@ -89,6 +91,20 @@
             android:layout_marginTop="10dp"
             android:background="@mipmap/score1" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/signout" />
     </LinearLayout>
 
 
