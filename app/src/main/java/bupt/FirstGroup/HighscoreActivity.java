@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.SharedPreferences;
 
+import android.view.WindowManager;
 import android.widget.TextView;
 
 
@@ -32,6 +33,8 @@ public class HighscoreActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_highscore);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         _easyTxtView = (TextView) this.findViewById(R.id.tv_score1);
         _medTxtView = (TextView) this.findViewById(R.id.tv_score2);

@@ -69,7 +69,7 @@ public class GameScreen extends Screen {
     private int _score;
     //2倍分数
     private int _multiplier;
-    //？？？
+    //连击数
     private int _streak;
 
     // tickers
@@ -107,13 +107,6 @@ public class GameScreen extends Screen {
     //右边音符
     private List<Ball> _ballsRight;
 
-    // lane miss indicators
-    //左边轨道透明度
-    private int _laneHitAlphaLeft;
-    //中间轨道透明度
-    private int _laneHitAlphaMiddle;
-    //右边轨道透明度
-    private int _laneHitAlphaRight;
 
     // difficulty params
     //产生音符间隔
@@ -179,6 +172,9 @@ public class GameScreen extends Screen {
     //游戏特效资源绘制
     ArrayList<AnimatorImage> animatorImages;
 
+    //游戏按钮
+    ButtonImage pause;
+
     GameScreen(Game game, Difficulty difficulty) {
         super(game);
 //        context=game.get();
@@ -206,9 +202,6 @@ public class GameScreen extends Screen {
         _currentTime = 0f;
         _explosionTicker = 0;
         _lifes = 10;
-        _laneHitAlphaLeft = 0;
-        _laneHitAlphaMiddle = 0;
-        _laneHitAlphaRight = 0;
         _currentTrack = Assets.musicTrack;
         _isEnding = false;
 
@@ -254,6 +247,10 @@ public class GameScreen extends Screen {
 
         //特效的生成
         animatorImages = new ArrayList<>();
+
+        //暂停键的设置
+        pause = new ButtonImage(Assets.pause,Assets.pause.getFormat(),_gameWidth/2-Assets.pause.getWidth()/2,0,null,null,null);
+
     }
 
     //读入音谱
@@ -293,11 +290,11 @@ public class GameScreen extends Screen {
 
         if (state == GameState.Ready)
             updateReady(touchEvents);
-        if (state == GameState.Running)
+        else if (state == GameState.Running)
             updateRunning(touchEvents, deltaTime);
-        if (state == GameState.Paused)
+        else if (state == GameState.Paused)
             updatePaused(touchEvents);
-        if (state == GameState.GameOver)
+        else if (state == GameState.GameOver)
             updateGameOver(touchEvents);
     }
 
@@ -381,14 +378,21 @@ public class GameScreen extends Screen {
                 int x = event.x;
                 int y = event.y;
 
+                //判断是否按下暂停键
+                if (x>=pause.getX()&&x<=pause.getX()+pause.getWidth()&&y>=pause.getY()&&y<=pause.getY()+pause.getHeight()){
+                    pause();
+                    Log.i("Testpause","已经按下按钮,状态更新为"+state);
+                    return;
+                }
+
                 //创建特效图片集
                 AnimatorImage touch = new AnimatorImage(Assets.anim1,x,y,3);
                 //加入特效列表
                 animatorImages.add(touch);
 
-                if (left!=null&&event.x>=left.getX()&&event.x<=left.getX()+left.getWidth()&&event.y>=left.getY()&&event.y<=left.getY()+left.getHeight()){
+                if (left!=null&&x>=left.getX()&&x<=left.getX()+left.getWidth()&&y>=left.getY()&&y<=left.getY()+left.getHeight()){
                     hitLane(_ballsLeft,list_Flower_Left);
-                }else if (right!=null&&event.x>=right.getX()&&event.x<=right.getX()+right.getWidth()&&event.y>=right.getY()&&event.y<=right.getY()+right.getHeight()){
+                }else if (right!=null&&x>=right.getX()&&x<=right.getX()+right.getWidth()&&y>=right.getY()&&y<=right.getY()+right.getHeight()){
                     hitLane(_ballsRight,list_Flower_Right);
                 }
             }
@@ -415,12 +419,10 @@ public class GameScreen extends Screen {
 
         // remove missed balls
         if (removeMissed(_ballsLeft.iterator(),list_Flower_Left.iterator())) {
-            _laneHitAlphaLeft = MISS_FLASH_INITIAL_ALPHA;
         }
 
 
         if (removeMissed(_ballsRight.iterator(),list_Flower_Right.iterator())) {
-            _laneHitAlphaRight = MISS_FLASH_INITIAL_ALPHA;
         }
 
         if (!_isEnding) {
@@ -649,13 +651,17 @@ public class GameScreen extends Screen {
             _currentTrack.pause();
         }
 
-
+        Log.i("Testpause","更新pause状态读取触摸事件");
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
             TouchEvent event = touchEvents.get(i);
             if (event.type == TouchEvent.TOUCH_DOWN) {
-                resume();
-                return;
+                int x = event.x;
+                int y = event.y;
+                if (x>=pause.getX()&&x<=pause.getX()+pause.getWidth()&&y>=pause.getY()&&y<=pause.getY()+pause.getHeight()){
+                    resume();
+                    return;
+                }
             }
         }
     }
@@ -840,9 +846,9 @@ public class GameScreen extends Screen {
     //绘制暂停界面
     private void drawPausedUI() {
         Graphics g = game.getGraphics();
-//        g.drawARGB(155, 0, 0, 0);
-//        g.drawImage(Assets.pause, 200, 500);
-//        g.drawString("TAP TO CONTINUE", 540, 845, _paintGameover);
+        g.drawARGB(155, 0, 0, 0);
+        g.drawImage(Assets.play, _gameWidth/2-Assets.pause.getWidth()/2,0);
+        g.drawString("TAP TO CONTINUE", _gameWidth / 2, _gameHeight / 2, _paintScore);
     }
 
     //绘制游戏结束UI

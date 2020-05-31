@@ -15,6 +15,7 @@ class Assets {
     static Image background;
     static Image gameover;
     static Image pause;
+    static Image play;
     static Image ballNormal;
     static Image ballMultiplier;
     static Image ballOneUp;
