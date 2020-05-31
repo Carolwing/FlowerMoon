@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -33,12 +35,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final Difficulty _diffMid =
             new Difficulty(Difficulty.MED_TAG, "super_meat_boy_power_of_the_meat.mp3", 128, 10,"easy.txt");
     private final Difficulty _diffHard =
-            new Difficulty(Difficulty.HARD_TAG, "Aquaria_Minibadass_OC_ReMix.mp3", 180, 15,"easy.txt");
+            new Difficulty(Difficulty.HARD_TAG, "high.mp3", 180, 15,"high.txt");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         System.out.println(CurrentUser.getName());
         showuser = (TextView) findViewById(R.id.userName);
         strat_btn = (ImageButton) findViewById(R.id.main_start_button);

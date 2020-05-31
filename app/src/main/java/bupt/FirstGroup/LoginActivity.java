@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -42,6 +43,8 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         name = findViewById(R.id.name);
         password = findViewById(R.id.password);
@@ -83,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    //简单存储+调用load实现刷新
+    //简单存储
     private void saveSharedPreferences() {
         System.out.println("4)saveSharedPreferences");
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE);
@@ -163,7 +166,6 @@ public class LoginActivity extends AppCompatActivity {
                         if (result.equals("注册成功")) {
                             //一下代码为跳转界面
                             CurrentUser.setName(n);
-                            saveSharedPreferences();
                             System.out.println(CurrentUser.getName());
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
@@ -196,7 +198,6 @@ public class LoginActivity extends AppCompatActivity {
                         System.out.println(result.equals("登录成功"));
                         if (result.equals("登录成功")) {
                             //一下代码为跳转界面
-                            saveSharedPreferences();
                             CurrentUser.setName(n);
                             System.out.println(CurrentUser.getName());
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);

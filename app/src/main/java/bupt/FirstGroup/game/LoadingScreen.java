@@ -57,6 +57,7 @@ public class LoadingScreen extends Screen {
         Assets.gameover = g.newImage(IMAGE_PATH + "gameover.png", Graphics.ImageFormat.RGB565);
         Assets.pause = g.newImage(IMAGE_PATH + "pause.png", Graphics.ImageFormat.RGB565);
         Assets.pauseclicked = g.newImage(IMAGE_PATH + "pauseclicked.png", Graphics.ImageFormat.RGB565);
+        Assets.play = g.newImage(IMAGE_PATH+"play.png",Graphics.ImageFormat.ARGB4444);
         Assets.score = g.newImage(IMAGE_PATH + "score.png", Graphics.ImageFormat.RGB565);
         Assets.streak = g.newImage(IMAGE_PATH + "streak.png", Graphics.ImageFormat.RGB565);
 

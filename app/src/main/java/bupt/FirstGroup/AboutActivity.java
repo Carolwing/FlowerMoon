@@ -2,6 +2,7 @@ package bupt.FirstGroup;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,8 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this._listView = (ListView)this.findViewById(R.id.about_list);
         BallDataAdapter data = new BallDataAdapter(this);
 
