@@ -27,6 +27,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import bupt.FirstGroup.entity.CurrentUser;
+import bupt.FirstGroup.game.DBConnection;
 
 
 public class LoginActivity extends AppCompatActivity {
