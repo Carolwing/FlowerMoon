@@ -1,6 +1,8 @@
 package bupt.FirstGroup.game;
 
 import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -8,24 +10,36 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.os.Handler;
 import android.os.Vibrator;
+import android.renderscript.Sampler;
 import android.util.Log;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
+import bupt.FirstGroup.GameActivity;
 import bupt.FirstGroup.MainActivity;
 import bupt.FirstGroup.entity.Record;
 import bupt.FirstGroup.framework.FileIO;
 import bupt.FirstGroup.framework.Game;
 import bupt.FirstGroup.framework.Graphics;
 import bupt.FirstGroup.framework.Image;
+import bupt.FirstGroup.framework.Input;
 import bupt.FirstGroup.framework.Music;
 import bupt.FirstGroup.framework.Screen;
 import bupt.FirstGroup.framework.Input.TouchEvent;
 import bupt.FirstGroup.framework.impl.AnimatorImage;
 import bupt.FirstGroup.framework.impl.ButtonImage;
+import bupt.FirstGroup.framework.impl.RTGame;
+import bupt.FirstGroup.framework.impl.RTGraphics;
 import bupt.FirstGroup.game.models.Ball;
 import bupt.FirstGroup.game.models.MusicPoint;
 import bupt.FirstGroup.models.Difficulty;
@@ -133,7 +147,7 @@ public class GameScreen extends Screen {
     // constants
     // how far the screen should scroll after the track ends
     //结束位置
-    private static final int END_TIME = 1800;
+    private static final int END_TIME = 0;
     // initial y coordinate of spawned balls
     //产生音符的位置
     private static final int BALL_INITIAL_Y = -50;
@@ -164,6 +178,10 @@ public class GameScreen extends Screen {
 
     //游戏按钮
     ButtonImage pause;
+
+    //游戏结束界面按钮
+    ButtonImage first;
+    ButtonImage second;
 
     GameScreen(Game game, Difficulty difficulty) {
         super(game);
@@ -218,7 +236,7 @@ public class GameScreen extends Screen {
 
 
         _paintGameover = new Paint();
-        _paintGameover.setTextSize(50);
+        _paintGameover.setTextSize(100);
         _paintGameover.setTextAlign(Paint.Align.CENTER);
         _paintGameover.setAntiAlias(true);
         _paintGameover.setColor(Color.BLACK);
@@ -334,6 +352,28 @@ public class GameScreen extends Screen {
         FileIO fileIO = game.getFileIO();
         SharedPreferences prefs = fileIO.getSharedPref();
         int oldScore;
+        // 设置按钮
+        boolean success = _lifes>0;
+        Graphics g = game.getGraphics();
+        if (success){
+            first = new ButtonImage(Assets.continue_,Assets.continue_.getFormat(),
+                    _gameWidth/2+Assets.score_bg.getWidth()/2-(int)(1.6*Assets.continue_.getWidth()),
+                    _gameHeight/2+Assets.score_bg.getHeight()/2-Assets.success.getHeight()+Assets.continue_.getHeight(),
+                    null,null,null);
+            second = new ButtonImage(Assets.return_,Assets.return_.getFormat(),
+                    _gameWidth/2+Assets.score_bg.getWidth()/2-(int)(1.6*Assets.return_.getWidth()),
+                    _gameHeight/2+Assets.score_bg.getHeight()/2-Assets.success.getHeight()+2*Assets.continue_.getHeight()+20,
+                    null,null,null);
+        }else{
+            first = new ButtonImage(Assets.resume_,Assets.resume_.getFormat(),
+                    _gameWidth/2+Assets.score_bg.getWidth()/2-(int)(1.6*Assets.resume_.getWidth()),
+                    _gameHeight/2+Assets.score_bg.getHeight()/2-Assets.fail.getHeight()+Assets.resume_.getHeight(),
+                    null,null,null);
+            second = new ButtonImage(Assets.return_,Assets.return_.getFormat(),
+                    _gameWidth/2+Assets.score_bg.getWidth()/2-(int)(1.6*Assets.return_.getWidth()),
+                    _gameHeight/2+Assets.score_bg.getHeight()/2-Assets.fail.getHeight()+2*Assets.resume_.getHeight()+20,
+                    null,null,null);
+        }
 
         switch(_difficulty.getMode()) {
             case Difficulty.EASY_TAG:
@@ -501,8 +541,8 @@ public class GameScreen extends Screen {
         if (distance>=90&&distance<180){
             balls.remove(lowestBall);
             flowers.remove(lowestFlower);
-            onHit(lowestBall);
             _grade=1;
+            onHit(lowestBall);
             return true;
         }else if (distance>=180&&distance<=270){
             balls.remove(lowestBall);
@@ -513,8 +553,8 @@ public class GameScreen extends Screen {
         }else if (distance<90){
             balls.remove(lowestBall);
             flowers.remove(lowestFlower);
-            onHit(lowestBall);
             _grade=2;
+            onHit(lowestBall);
             return true;
         }else{
             return true;
@@ -673,24 +713,48 @@ public class GameScreen extends Screen {
     //To-do:结束界面
     private void updateGameOver(List<TouchEvent> touchEvents) {
         if (!_currentTrack.isStopped()) {
-            _currentTrack.stop();
+            _currentTrack.pause();
         }
 
+        boolean success = _lifes>0;
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
             TouchEvent event = touchEvents.get(i);
             if (event.type == TouchEvent.TOUCH_UP) {
-                if (event.x > 300 && event.x < 540 && event.y > 845
-                        && event.y < 1100) {
+                if (event.x > first.getX() && event.x < first.getX()+first.getWidth()
+                        && event.y > first.getY() && event.y < first.getY()+first.getHeight()) {
+                    if (success) {
+                        //进行下一关
+                        //获取当前等级
+                        String TAG = _difficulty.getMode();
+                        Difficulty next = _difficulty;
+                        switch (TAG){
+                            case Difficulty.EASY_TAG:
+                                next = new Difficulty(Difficulty.MED_TAG, "super_meat_boy_power_of_the_meat.mp3", 128, 10,"easy.txt");
+                                break;
+                            case Difficulty.MED_TAG:
+                                next = new Difficulty(Difficulty.HARD_TAG, "high.mp3", 180, 15,"high.txt");
+                                break;
+                            case Difficulty.HARD_TAG:
+                                //通关页面
+                                game.goToActivity(MainActivity.class);
+                                break;
+                        }
+                        game.setScreen(new LoadingScreen(game, next));
+//                        game.goToActivity(MainActivity.class);
+//                        return;
+                    }else{
+                        //满血复活
+                        state = GameState.Paused;
+                        _lifes=10;
+                        resume();
+                    }
+                } else if (event.x >= second.getX() && event.x < second.getX()+second.getWidth()
+                        && event.y > second.getY() && event.y < second.getY()+second.getHeight()) {
                     game.goToActivity(MainActivity.class);
-                    return;
-                } else if (event.x >= 540 && event.x < 780 && event.y > 845
-                        && event.y < 1100) {
-                    game.setScreen(new LoadingScreen(game, _difficulty));
                 }
             }
         }
-
 
     }
 
@@ -860,8 +924,18 @@ public class GameScreen extends Screen {
     private void drawGameOverUI() {
         Graphics g = game.getGraphics();
         g.drawARGB(205, 0, 0, 0);
-        g.drawImage(Assets.gameover, 200, 500);
-        g.drawString("FINAL SCORE: " + _score, 540, 845, _paintGameover);
+        g.drawImage(Assets.score_bg, _gameWidth/2-Assets.score_bg.getWidth()/2, _gameHeight/2-Assets.score_bg.getHeight()/2);
+        boolean success = _lifes>0;
+        if (success){
+            g.drawImage(Assets.success,_gameWidth/2-Assets.success.getWidth()/2, _gameHeight/2-Assets.success.getHeight()/2);
+            g.drawImage(Assets.continue_,_gameWidth/2+Assets.score_bg.getWidth()/2-(int)(1.6*Assets.continue_.getWidth()),_gameHeight/2+Assets.score_bg.getHeight()/2-Assets.success.getHeight()+Assets.continue_.getHeight());
+            g.drawImage(Assets.return_,_gameWidth/2+Assets.score_bg.getWidth()/2-(int)(1.6*Assets.return_.getWidth()),_gameHeight/2+Assets.score_bg.getHeight()/2-Assets.success.getHeight()+2*Assets.continue_.getHeight()+20);
+        }else{
+            g.drawImage(Assets.fail,_gameWidth/2-Assets.fail.getWidth()/2, _gameHeight/2-Assets.fail.getHeight()/2);
+            g.drawImage(Assets.resume_,_gameWidth/2+Assets.score_bg.getWidth()/2-(int)(1.6*Assets.resume_.getWidth()),_gameHeight/2+Assets.score_bg.getHeight()/2-Assets.fail.getHeight()+Assets.resume_.getHeight());
+            g.drawImage(Assets.return_,_gameWidth/2+Assets.score_bg.getWidth()/2-(int)(1.6*Assets.return_.getWidth()),_gameHeight/2+Assets.score_bg.getHeight()/2-Assets.fail.getHeight()+2*Assets.resume_.getHeight()+20);
+        }
+        g.drawString(String.valueOf(_score),first.getX()+first.getWidth()/2,_gameHeight/2,_paintGameover);
     }
 
     //绘制暂停界面
