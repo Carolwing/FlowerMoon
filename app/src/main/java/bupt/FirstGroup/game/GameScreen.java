@@ -1,8 +1,6 @@
 package bupt.FirstGroup.game;
 
 import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -10,32 +8,24 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.AssetFileDescriptor;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
-import android.os.Handler;
 import android.os.Vibrator;
 import android.util.Log;
-import android.widget.FrameLayout;
 
-import bupt.FirstGroup.GameActivity;
 import bupt.FirstGroup.MainActivity;
+import bupt.FirstGroup.entity.Record;
 import bupt.FirstGroup.framework.FileIO;
 import bupt.FirstGroup.framework.Game;
 import bupt.FirstGroup.framework.Graphics;
 import bupt.FirstGroup.framework.Image;
-import bupt.FirstGroup.framework.Input;
 import bupt.FirstGroup.framework.Music;
 import bupt.FirstGroup.framework.Screen;
 import bupt.FirstGroup.framework.Input.TouchEvent;
 import bupt.FirstGroup.framework.impl.AnimatorImage;
 import bupt.FirstGroup.framework.impl.ButtonImage;
-import bupt.FirstGroup.framework.impl.RTGame;
-import bupt.FirstGroup.framework.impl.RTGraphics;
 import bupt.FirstGroup.game.models.Ball;
 import bupt.FirstGroup.game.models.MusicPoint;
 import bupt.FirstGroup.models.Difficulty;
@@ -359,6 +349,20 @@ public class GameScreen extends Screen {
                 oldScore = 0;
                 break;
         }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("0.0)GameScreen.new Thread");
+                DBConnection db;
+                db = new DBConnection();
+                Record record = new Record(_score, _difficulty.getMode());
+                System.out.println("1.1)GameScreen." + record.toString());
+                //addRecord(String time,int score,int grade,String userName)
+                String r1 = db.addRecord(record.getTime(), record.getScore(), record.getGrade(), record.getName());
+                System.out.println("1.2)GameScreen." + r1);
+
+            }
+        }).start();
 
         if(_score > oldScore) {
             SharedPreferences.Editor editor = prefs.edit();
@@ -686,6 +690,7 @@ public class GameScreen extends Screen {
                 }
             }
         }
+
 
     }
 

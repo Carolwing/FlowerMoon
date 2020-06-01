@@ -1,8 +1,5 @@
 package bupt.FirstGroup;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
 
 import bupt.FirstGroup.framework.Screen;
 import bupt.FirstGroup.framework.impl.RTGame;
@@ -18,6 +15,7 @@ public class GameActivity extends RTGame {
         // get passed difficulty object
         _diff = (Difficulty)this.getIntent().getSerializableExtra("difficulty");
         //加载的游戏资源
+
         return new LoadingScreen(this, _diff);
     }
 

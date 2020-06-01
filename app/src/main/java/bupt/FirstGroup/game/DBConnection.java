@@ -1,4 +1,4 @@
-package bupt.FirstGroup;
+package bupt.FirstGroup.game;
 
 import android.util.Log;
 
@@ -115,7 +115,8 @@ public class DBConnection {
         }
         return resultString;
     }
-    public static String addRecord(String time,int score,String grade,String userName){
+
+    public static String addRecord(String time, int score, int grade, String userName) {
         String resultString = "";
         PreparedStatement stmt = null;
         Connection conn = linkMysql();
@@ -125,7 +126,7 @@ public class DBConnection {
             stmt = conn.prepareStatement(sql);
             stmt.setString(1,time);
             stmt.setInt(2,score);
-            stmt.setString(3,grade);
+            stmt.setInt(3, grade);
             stmt.setString(4,userName);
             stmt.executeUpdate();
             resultString="插入成功";
@@ -141,6 +142,7 @@ public class DBConnection {
                 }
             }
         }
+        System.out.println("1.0)addRecord:" + resultString);
         return resultString;
     }
     public static String[] findMaxScore(int grade) {

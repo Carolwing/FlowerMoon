@@ -5,17 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import bupt.FirstGroup.entity.CurrentUser;
+import bupt.FirstGroup.game.DBConnection;
 import bupt.FirstGroup.models.Difficulty;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
