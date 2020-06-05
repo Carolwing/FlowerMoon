@@ -12,9 +12,9 @@ public abstract class Screen {
         this.game = game;
     }
 
-    public abstract void update(float deltaTime);
+    public abstract void update(float deltaTime);//逻辑
 
-    public abstract void paint(float deltaTime);
+    public abstract void paint(float deltaTime);//前端
 
     public abstract void pause();
 

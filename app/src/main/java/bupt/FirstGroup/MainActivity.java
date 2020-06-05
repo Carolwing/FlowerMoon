@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import bupt.FirstGroup.entity.CurrentUser;
 import bupt.FirstGroup.game.DBConnection;
@@ -198,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent i;
         switch (v.getId()) {
             case R.id.main_first_button:
-                i = new Intent(this, GameActivity.class);
+                i = new Intent(this, VideoActivity.class);
                 i.putExtra("difficulty", this._diffEasy);
                 this.startActivity(i);
                 break;

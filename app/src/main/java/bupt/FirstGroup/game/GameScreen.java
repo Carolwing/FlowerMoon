@@ -413,7 +413,7 @@ public class GameScreen extends Screen {
 
     // 处理触摸事件
     private void handleTouchEvents(List<TouchEvent> touchEvents) {
-        int len = touchEvents.size();
+        int len = touchEvents.size();//手指|触摸事件次数
 
         for (int i = 0; i < len; i++) {
             TouchEvent event = touchEvents.get(i);
@@ -536,6 +536,7 @@ public class GameScreen extends Screen {
         }
         else
             return true;
+        //最下边的球
         float distance = Math.abs(lowestBall.y-_gameHeight+Assets.ballNormal.getHeight()/2);
         Log.i("lalala","distance:"+String.valueOf(distance));
         if (distance>=90&&distance<180){

@@ -144,7 +144,7 @@ public class RTGame extends Activity implements Game {
     public void setScreen(Screen screen) {
         if (screen == null)
             throw new IllegalArgumentException("Screen must not be null");
-
+        //暂停、排列，屏幕恢复，后端更新
         this.screen.pause();
         this.screen.dispose();
         screen.resume();
