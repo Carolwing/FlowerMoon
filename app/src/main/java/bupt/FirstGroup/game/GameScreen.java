@@ -438,14 +438,9 @@ public class GameScreen extends Screen {
 
                 //创建特效图片集
                 AnimatorImage touch = new AnimatorImage(Assets.anim1,x,y,3);
-                AnimatorImage perfect_hit = new AnimatorImage(Assets.anim2,x,y,2);
-                AnimatorImage great_hit = new AnimatorImage(Assets.anim3,x,y,2);
-                AnimatorImage disappear = new AnimatorImage(Assets.anim4,x,y,3);
+
                 //加入特效列表
                 animatorImages.add(touch);
-                animatorImages2.add(perfect_hit);
-                animatorImages3.add(great_hit);
-                animatorImages4.add(disappear);
 
                 if (left!=null&&x>=left.getX()&&x<=left.getX()+left.getWidth()&&y>=left.getY()&&y<=left.getY()+left.getHeight()){
                     hitLane(_ballsLeft,list_Flower_Left);
@@ -454,6 +449,41 @@ public class GameScreen extends Screen {
                 }
             }
         }
+    }
+
+    //处理完美击中事件
+    private void perfecthitEvent(List<ButtonImage> buttonImages){
+        ButtonImage image = buttonImages.get(1);
+        int x = image.getX();
+        int y = image.getY();
+        //创建特效图片集
+        AnimatorImage perfect_hit = new AnimatorImage(Assets.anim2,x,y,2);
+        //加入特效列表
+        animatorImages2.add(perfect_hit);
+
+    }
+
+    //处理优秀击中事件
+    private void greathitEvent(List<ButtonImage> buttonImages){
+        ButtonImage image = buttonImages.get(1);
+        int x = image.getX();
+        int y = image.getY();
+        //创建特效图片集
+        AnimatorImage great_hit = new AnimatorImage(Assets.anim3,x,y,2);
+        //加入特效列表
+        animatorImages3.add(great_hit);
+
+    }
+
+    //处理未击中事件
+    private void misshitEvent(List<ButtonImage> buttonImages){
+        ButtonImage image = buttonImages.get(1);
+        int x = image.getX();
+        int y = image.getY();
+        //创建特效图片集
+        AnimatorImage disappear = new AnimatorImage(Assets.anim4,x,y,3);
+        //加入特效列表
+        animatorImages4.add(disappear);
     }
 
     // update all the games variables each tick
