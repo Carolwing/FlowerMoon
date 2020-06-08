@@ -31,10 +31,22 @@ public class LoadingScreen extends Screen {
     @Override
     public void update(float deltaTime) {
         Graphics g = game.getGraphics();
-        //加载特效资源，暂空
-        Assets.anim1 = new Image[32];
+        //加载特效资源
+        Assets.anim1 = new Image[32];//触摸波纹
         for (int i=0;i<32;i++){
             Assets.anim1[i]=g.newImage(ANIM_PATH+"click_screen"+String.valueOf(i+1)+".png",Graphics.ImageFormat.ARGB4444);
+        }
+        Assets.anim2 = new Image[23];//完美击中
+        for (int i=0;i<23;i++){
+            Assets.anim2[i]=g.newImage(ANIM_PATH+"perfect_hit"+String.valueOf(i+1)+".png",Graphics.ImageFormat.ARGB4444);
+        }
+        Assets.anim3 = new Image[23];//优秀击中
+        for (int i=0;i<23;i++){
+            Assets.anim3[i]=g.newImage(ANIM_PATH+"great_click"+String.valueOf(i+1)+".png",Graphics.ImageFormat.ARGB4444);
+        }
+        Assets.anim4 = new Image[23];//消失
+        for (int i=0;i<23;i++){
+            Assets.anim4[i]=g.newImage(ANIM_PATH+"disappear"+String.valueOf(i+1)+".png",Graphics.ImageFormat.ARGB4444);
         }
         //加载按钮资源
         Assets.flower_key1=g.newImage(IMAGE_PATH+"flower_key_1.png",Graphics.ImageFormat.ARGB4444);

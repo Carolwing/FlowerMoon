@@ -11,6 +11,10 @@ import bupt.FirstGroup.framework.impl.ButtonImage;
 class Assets {
     //特效资源图集
     static Image[] anim1;//触摸波纹
+    static Image[] anim2;//完美击中
+    static Image[] anim3;//优秀击中
+    static Image[] anim4;//错过
+
     // Graphics
     //背景图片
     static Image background;

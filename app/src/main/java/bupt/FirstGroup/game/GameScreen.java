@@ -174,7 +174,11 @@ public class GameScreen extends Screen {
     private Context context;
 
     //游戏特效资源绘制
-    ArrayList<AnimatorImage> animatorImages;
+    ArrayList<AnimatorImage> animatorImages;//触碰波纹
+    ArrayList<AnimatorImage> animatorImages2;//完美击中
+    ArrayList<AnimatorImage> animatorImages3;//优秀击中
+    ArrayList<AnimatorImage> animatorImages4;//消失
+
 
     //游戏按钮
     ButtonImage pause;
@@ -255,6 +259,9 @@ public class GameScreen extends Screen {
 
         //特效的生成
         animatorImages = new ArrayList<>();
+        animatorImages2 = new ArrayList<>();
+        animatorImages3 = new ArrayList<>();
+        animatorImages4 = new ArrayList<>();
 
         //暂停键的设置
         pause = new ButtonImage(Assets.pause,Assets.pause.getFormat(),_gameWidth/2-Assets.pause.getWidth()/2,0,null,null,null);
@@ -431,8 +438,14 @@ public class GameScreen extends Screen {
 
                 //创建特效图片集
                 AnimatorImage touch = new AnimatorImage(Assets.anim1,x,y,3);
+                AnimatorImage perfect_hit = new AnimatorImage(Assets.anim2,x,y,2);
+                AnimatorImage great_hit = new AnimatorImage(Assets.anim3,x,y,2);
+                AnimatorImage disappear = new AnimatorImage(Assets.anim4,x,y,3);
                 //加入特效列表
                 animatorImages.add(touch);
+                animatorImages2.add(perfect_hit);
+                animatorImages3.add(great_hit);
+                animatorImages4.add(disappear);
 
                 if (left!=null&&x>=left.getX()&&x<=left.getX()+left.getWidth()&&y>=left.getY()&&y<=left.getY()+left.getHeight()){
                     hitLane(_ballsLeft,list_Flower_Left);
@@ -789,7 +802,11 @@ public class GameScreen extends Screen {
             paintFlower(g,b);
         }
 
+        //绘制特效
         drawAllAnimator(g, animatorImages);
+        drawAllAnimator(g,animatorImages2);
+        drawAllAnimator(g,animatorImages3);
+        drawAllAnimator(g,animatorImages4);
 
         // Secondly, draw the UI above the game elements.
         if (state == GameState.Ready)
@@ -821,6 +838,9 @@ public class GameScreen extends Screen {
             animatorImages.remove(j);
         }
     }
+
+
+
 
     //绘制音符的位置
     private void paintBall(Graphics g, Ball b) {
