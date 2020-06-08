@@ -395,7 +395,7 @@ public class GameScreen extends Screen {
                 break;
             default:
                 oldScore = 0;
-                break;
+                return;
         }
         new Thread(new Runnable() {
             @Override
@@ -773,6 +773,9 @@ public class GameScreen extends Screen {
                             //通关页面
                             game.goToActivity(VideoActivity.class,"end",null);
                             break;
+                        case Difficulty.SELF_TAG:
+                            game.goToActivity(MainActivity.class);
+                            break;
                     }
                 }
             }
@@ -809,6 +812,9 @@ public class GameScreen extends Screen {
                             case Difficulty.HARD_TAG:
                                 //通关页面
                                 game.goToActivity(VideoActivity.class,"end",null);
+                                break;
+                            case Difficulty.SELF_TAG:
+                                game.goToActivity(MainActivity.class);
                                 break;
                         }
                         //game.setScreen(new LoadingScreen(game, next));

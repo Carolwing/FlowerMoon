@@ -34,6 +34,22 @@ public class RTMusic implements Music, OnCompletionListener, OnSeekCompleteListe
         }
     }
 
+    public RTMusic(String path) {
+        mediaPlayer = new MediaPlayer();
+        try {
+            mediaPlayer.setDataSource(path);
+            mediaPlayer.prepare();
+            isPrepared = true;
+            mediaPlayer.setOnCompletionListener(this);
+            mediaPlayer.setOnSeekCompleteListener(this);
+            mediaPlayer.setOnPreparedListener(this);
+            mediaPlayer.setOnVideoSizeChangedListener(this);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Couldn't load music");
+        }
+    }
+
     @Override
     public void dispose() {
 

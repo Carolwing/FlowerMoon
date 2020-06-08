@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         strat_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(MainActivity.this,ImageAnimation.class);//记得改回来！！！这里只是一个测试
+                Intent i=new Intent(MainActivity.this,SelfMusicActivity.class);//记得改回来！！！这里只是一个测试
                 MainActivity.this.startActivity(i);
             }
         });

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerVertical="true"
+    android:layout_gravity="center_horizontal"
+    android:background="@mipmap/lgb"
+    android:foregroundGravity="center_vertical|center|center_horizontal"
+    android:gravity="center|center_horizontal|center_vertical"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="bupt.FirstGroup.SelfMusicActivity">
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="568dp"
+        android:layout_height="93dp"
+        android:text="\t本功能可提供玩家自定义曲谱和音乐，曲谱的格式为如下:\n\t以行分割每个note，每行包括一个时间节点和一个音符类型（1-6），以TAB分割，每个时间节点为该note
+出现的秒数*100\n\t如100\t1表示音符类型为1，在第一秒出现。" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|center_horizontal|center_vertical"
+        android:foregroundGravity="center_vertical|center|center_horizontal"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:onClick="select1"
+        android:text="选择音频"
+        tools:layout_editor_absoluteX="109dp"
+        tools:layout_editor_absoluteY="76dp" />
+
+    <TextView
+        android:id="@+id/path1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|center_horizontal|center_vertical"
+        android:foregroundGravity="center_vertical|center|center_horizontal"
+        android:gravity="center|center_horizontal|center_vertical"
+        tools:layout_editor_absoluteX="365dp"
+        tools:layout_editor_absoluteY="136dp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|center_horizontal|center_vertical"
+        android:foregroundGravity="center_vertical|center|center_horizontal"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:onClick="select2"
+        android:text="选择音谱"
+        tools:layout_editor_absoluteX="109dp"
+        tools:layout_editor_absoluteY="174dp" />
+
+    <TextView
+        android:id="@+id/path"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|center_horizontal|center_vertical"
+        android:foregroundGravity="center_vertical|center|center_horizontal"
+        android:gravity="center|center_horizontal|center_vertical"
+        tools:layout_editor_absoluteX="365dp"
+        tools:layout_editor_absoluteY="231dp" />
+
+    <ImageButton
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|center_horizontal|center_vertical"
+        android:background="@mipmap/start_btn1"
+        tools:layout_editor_absoluteX="306dp"
+        tools:layout_editor_absoluteY="286dp" />
+
+</LinearLayout>

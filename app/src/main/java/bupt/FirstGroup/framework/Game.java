@@ -1,5 +1,6 @@
 package bupt.FirstGroup.framework;
 
+import android.content.Context;
 import android.os.Vibrator;
 
 import bupt.FirstGroup.models.Difficulty;
@@ -9,6 +10,9 @@ import bupt.FirstGroup.models.Difficulty;
  */
 
 public interface Game {
+
+    public Context getContext();
+
     public Audio getAudio();
 
     public Input getInput();

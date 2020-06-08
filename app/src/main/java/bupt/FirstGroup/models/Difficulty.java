@@ -9,6 +9,7 @@ public class Difficulty implements Serializable{
     public static final String EASY_TAG = "easy";
     public static final String MED_TAG = "medium";
     public static final String HARD_TAG = "hard";
+    public static final String SELF_TAG = "self";
 
 
 

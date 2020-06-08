@@ -32,6 +32,12 @@ public class RTGame extends Activity implements Game {
     FileIO fileIO;
     Screen screen;
     WakeLock wakeLock;
+    Context context;
+
+    @Override
+    public Context getContext() {
+        return context;
+    }
 
     @Override
     public void goToActivity(Class<?> activity) {
@@ -57,6 +63,7 @@ public class RTGame extends Activity implements Game {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context=getApplicationContext();
 
         //获取窗口大小
         requestWindowFeature(Window.FEATURE_NO_TITLE);

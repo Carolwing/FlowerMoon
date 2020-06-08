@@ -3,13 +3,18 @@ package bupt.FirstGroup.game;
 import android.content.res.AssetManager;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import bupt.FirstGroup.framework.Game;
 import bupt.FirstGroup.framework.Graphics;
 import bupt.FirstGroup.framework.Image;
 import bupt.FirstGroup.framework.Screen;
 import bupt.FirstGroup.framework.impl.RTGame;
+import bupt.FirstGroup.framework.impl.RTMusic;
 import bupt.FirstGroup.models.Difficulty;
 
 
@@ -101,11 +106,24 @@ public class LoadingScreen extends Screen {
         Assets.soundExplosion = game.getAudio().createSound(SOUND_EFFECTS_PATH + "sound_explosion.ogg");
         Assets.soundCreepyLaugh = game.getAudio().createSound(SOUND_EFFECTS_PATH + "sound_creepy_laugh.mp3");
         //加载音乐资源
-        Assets.musicTrack = game.getAudio().createMusic(MUSIC_PATH + _diff.getMusic());
-        try {
-            Assets.musicScore = game.getFileIO().readAsset(MUSIC_SCORE_PATH + _diff.getScoreTime());
-        }catch (Exception e){
-            e.printStackTrace();
+        if (_diff.getMode().equals("self")){
+            File cacheDir= game.getContext().getCacheDir();
+            String path = cacheDir.getAbsolutePath()+"/music.mp3";
+            Assets.musicTrack = new RTMusic(path);
+            Log.i("lalala",path);
+            try {
+                Assets.musicScore = new FileInputStream(new File(String.valueOf(cacheDir.getAbsolutePath()), "music.txt").getAbsolutePath());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            Log.i("lalala",new File(String.valueOf(cacheDir.getAbsolutePath()),"music.txt").getAbsolutePath());
+        }else {
+            Assets.musicTrack = game.getAudio().createMusic(MUSIC_PATH + _diff.getMusic());
+            try {
+                Assets.musicScore = game.getFileIO().readAsset(MUSIC_SCORE_PATH + _diff.getScoreTime());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         game.setScreen(new GameScreen((RTGame)game, _diff));
