@@ -2,6 +2,8 @@ package bupt.FirstGroup.framework;
 
 import android.os.Vibrator;
 
+import bupt.FirstGroup.models.Difficulty;
+
 /**
  * Created by Peter on 23.01.2017.
  */
@@ -24,4 +26,6 @@ public interface Game {
     public Screen getInitScreen();
 
     public void goToActivity(Class<?> activity);
+
+    public void goToActivity(Class<?> activity, String TAG, Difficulty difficulty);
 }

@@ -19,9 +19,9 @@ public class DifficultySelectionActivity extends AppCompatActivity implements Vi
     private final Difficulty _diffEasy =
             new Difficulty(Difficulty.EASY_TAG, "easy.mp3", 115f/2, 8, "easy.txt");
     private final Difficulty _diffMid =
-            new Difficulty(Difficulty.MED_TAG, "super_meat_boy_power_of_the_meat.mp3", 128, 10,"easy.txt");
+            new Difficulty(Difficulty.MED_TAG, "medium.mp3", 128, 10,"medium.txt");
     private final Difficulty _diffHard =
-            new Difficulty(Difficulty.HARD_TAG, "Aquaria_Minibadass_OC_ReMix.mp3", 180, 15,"easy.txt");
+            new Difficulty(Difficulty.HARD_TAG, "high.mp3", 180, 15,"high.txt");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

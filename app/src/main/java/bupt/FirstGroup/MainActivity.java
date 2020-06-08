@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final Difficulty _diffEasy =
             new Difficulty(Difficulty.EASY_TAG, "easy.mp3", 115f/2, 8,"easy.txt");
     private final Difficulty _diffMid =
-            new Difficulty(Difficulty.MED_TAG, "super_meat_boy_power_of_the_meat.mp3", 128, 10,"easy.txt");
+            new Difficulty(Difficulty.MED_TAG, "medium.mp3", 128, 10,"medium.txt");
     private final Difficulty _diffHard =
             new Difficulty(Difficulty.HARD_TAG, "high.mp3", 180, 15,"high.txt");
 
@@ -200,16 +200,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.main_first_button:
                 i = new Intent(this, VideoActivity.class);
+                i.putExtra("TAG",Difficulty.EASY_TAG);
                 i.putExtra("difficulty", this._diffEasy);
                 this.startActivity(i);
                 break;
             case R.id.main_second_button:
-                i = new Intent(this, GameActivity.class);
+                i = new Intent(this, VideoActivity.class);
+                i.putExtra("TAG",Difficulty.MED_TAG);
                 i.putExtra("difficulty", this._diffMid);
                 this.startActivity(i);
                 break;
             case R.id.main_third_button:
-                i = new Intent(this, GameActivity.class);
+                i = new Intent(this, VideoActivity.class);
+                i.putExtra("TAG",Difficulty.HARD_TAG);
                 i.putExtra("difficulty", this._diffHard);
                 this.startActivity(i);
                 break;

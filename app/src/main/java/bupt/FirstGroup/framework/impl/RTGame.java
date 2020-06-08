@@ -22,6 +22,7 @@ import bupt.FirstGroup.framework.Game;
 import bupt.FirstGroup.framework.Graphics;
 import bupt.FirstGroup.framework.Input;
 import bupt.FirstGroup.framework.Screen;
+import bupt.FirstGroup.models.Difficulty;
 
 public class RTGame extends Activity implements Game {
     RTFastRenderView renderView;
@@ -35,6 +36,17 @@ public class RTGame extends Activity implements Game {
     @Override
     public void goToActivity(Class<?> activity) {
         Intent i = new Intent(this, activity);
+        // add flag, when activity already runs,
+        // use it instead of launching a new instance
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+    }
+
+    @Override
+    public void goToActivity(Class<?> activity, String TAG, Difficulty difficulty) {
+        Intent i = new Intent(this, activity);
+        i.putExtra("TAG",TAG);
+        i.putExtra("difficulty",difficulty);
         // add flag, when activity already runs,
         // use it instead of launching a new instance
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

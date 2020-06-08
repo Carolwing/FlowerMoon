@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import bupt.FirstGroup.GameActivity;
 import bupt.FirstGroup.MainActivity;
+import bupt.FirstGroup.VideoActivity;
 import bupt.FirstGroup.entity.Record;
 import bupt.FirstGroup.framework.FileIO;
 import bupt.FirstGroup.framework.Game;
@@ -175,9 +176,9 @@ public class GameScreen extends Screen {
 
     //游戏特效资源绘制
     ArrayList<AnimatorImage> animatorImages;//触碰波纹
-    ArrayList<AnimatorImage> animatorImages2;//完美击中
+    /*ArrayList<AnimatorImage> animatorImages2;//完美击中
     ArrayList<AnimatorImage> animatorImages3;//优秀击中
-    ArrayList<AnimatorImage> animatorImages4;//消失
+    ArrayList<AnimatorImage> animatorImages4;//消失*/
 
 
     //游戏按钮
@@ -259,9 +260,9 @@ public class GameScreen extends Screen {
 
         //特效的生成
         animatorImages = new ArrayList<>();
-        animatorImages2 = new ArrayList<>();
+        /*animatorImages2 = new ArrayList<>();
         animatorImages3 = new ArrayList<>();
-        animatorImages4 = new ArrayList<>();
+        animatorImages4 = new ArrayList<>();*/
 
         //暂停键的设置
         pause = new ButtonImage(Assets.pause,Assets.pause.getFormat(),_gameWidth/2-Assets.pause.getWidth()/2,0,null,null,null);
@@ -452,38 +453,38 @@ public class GameScreen extends Screen {
     }
 
     //处理完美击中事件
-    private void perfecthitEvent(List<ButtonImage> buttonImages){
-        ButtonImage image = buttonImages.get(1);
-        int x = image.getX();
-        int y = image.getY();
+    private void perfecthitEvent(ButtonImage image){
+        //ButtonImage image = buttonImages.get(0);
+        int x = image.getX()+image.getWidth()/2;
+        int y = image.getY()+image.getHeight()/2;
         //创建特效图片集
         AnimatorImage perfect_hit = new AnimatorImage(Assets.anim2,x,y,2);
         //加入特效列表
-        animatorImages2.add(perfect_hit);
+        animatorImages.add(perfect_hit);
 
     }
 
     //处理优秀击中事件
-    private void greathitEvent(List<ButtonImage> buttonImages){
-        ButtonImage image = buttonImages.get(1);
-        int x = image.getX();
-        int y = image.getY();
+    private void greathitEvent(ButtonImage image){
+      //  ButtonImage image = buttonImages.get(1);
+        int x = image.getX()+image.getWidth()/2;
+        int y = image.getY()+image.getHeight()/2;
         //创建特效图片集
         AnimatorImage great_hit = new AnimatorImage(Assets.anim3,x,y,2);
         //加入特效列表
-        animatorImages3.add(great_hit);
+        animatorImages.add(great_hit);
 
     }
 
     //处理未击中事件
-    private void misshitEvent(List<ButtonImage> buttonImages){
-        ButtonImage image = buttonImages.get(1);
-        int x = image.getX();
-        int y = image.getY();
+    private void misshitEvent(ButtonImage image){
+       // ButtonImage image = buttonImages.get(1);
+        int x = image.getX()+image.getWidth()/2;
+        int y = image.getY()+image.getHeight()/2;
         //创建特效图片集
         AnimatorImage disappear = new AnimatorImage(Assets.anim4,x,y,3);
         //加入特效列表
-        animatorImages4.add(disappear);
+        animatorImages.add(disappear);
     }
 
     // update all the games variables each tick
@@ -559,6 +560,7 @@ public class GameScreen extends Screen {
             ButtonImage btn = floweriter.next();
             if (b.y>_gameHeight+Assets.ballNormal.getHeight()/2){
                 iterator.remove();
+                misshitEvent(btn);
                 floweriter.remove();
                 Log.d(TAG, "fail press");
                 onMiss(b);
@@ -585,19 +587,23 @@ public class GameScreen extends Screen {
         if (distance>=90&&distance<180){
             balls.remove(lowestBall);
             flowers.remove(lowestFlower);
+
             _grade=1;
+            greathitEvent(lowestFlower);
             onHit(lowestBall);
             return true;
         }else if (distance>=180&&distance<=270){
             balls.remove(lowestBall);
             flowers.remove(lowestFlower);
             _grade=0;
+            misshitEvent(lowestFlower);
             onMiss(null);
             return false;
         }else if (distance<90){
             balls.remove(lowestBall);
             flowers.remove(lowestFlower);
             _grade=2;
+            perfecthitEvent(lowestFlower);
             onHit(lowestBall);
             return true;
         }else{
@@ -749,6 +755,25 @@ public class GameScreen extends Screen {
                 if (x>=pause.getX()&&x<=pause.getX()+pause.getWidth()&&y>=pause.getY()&&y<=pause.getY()+pause.getHeight()){
                     resume();
                     return;
+                }else if (x<=_gameWidth/2 && y<=_gameHeight/2+50 && y>=_gameHeight/2-50) {//返回主界面
+                    game.goToActivity(MainActivity.class);
+                }else if (x>=_gameWidth/2 && y<=_gameHeight/2+50 && y>=_gameHeight/2-50){//跳过该关
+                    String TAG = _difficulty.getMode();
+                    Difficulty next = _difficulty;
+                    switch (TAG){
+                        case Difficulty.EASY_TAG:
+                            next = new Difficulty(Difficulty.MED_TAG, "medium.mp3", 128, 10,"medium.txt");
+                            game.goToActivity(VideoActivity.class,Difficulty.MED_TAG,next);
+                            break;
+                        case Difficulty.MED_TAG:
+                            next = new Difficulty(Difficulty.HARD_TAG, "high.mp3", 180, 15,"high.txt");
+                            game.goToActivity(VideoActivity.class,Difficulty.HARD_TAG,next);
+                            break;
+                        case Difficulty.HARD_TAG:
+                            //通关页面
+                            game.goToActivity(VideoActivity.class,"end",null);
+                            break;
+                    }
                 }
             }
         }
@@ -774,17 +799,20 @@ public class GameScreen extends Screen {
                         Difficulty next = _difficulty;
                         switch (TAG){
                             case Difficulty.EASY_TAG:
-                                next = new Difficulty(Difficulty.MED_TAG, "super_meat_boy_power_of_the_meat.mp3", 128, 10,"easy.txt");
+                                next = new Difficulty(Difficulty.MED_TAG, "medium.mp3", 128, 10,"medium.txt");
+                                game.goToActivity(VideoActivity.class,Difficulty.MED_TAG,next);
                                 break;
                             case Difficulty.MED_TAG:
                                 next = new Difficulty(Difficulty.HARD_TAG, "high.mp3", 180, 15,"high.txt");
+                                game.goToActivity(VideoActivity.class,Difficulty.HARD_TAG,next);
                                 break;
                             case Difficulty.HARD_TAG:
                                 //通关页面
-                                game.goToActivity(MainActivity.class);
+                                game.goToActivity(VideoActivity.class,"end",null);
                                 break;
                         }
-                        game.setScreen(new LoadingScreen(game, next));
+                        //game.setScreen(new LoadingScreen(game, next));
+
 //                        game.goToActivity(MainActivity.class);
 //                        return;
                     }else{
@@ -834,9 +862,9 @@ public class GameScreen extends Screen {
 
         //绘制特效
         drawAllAnimator(g, animatorImages);
-        drawAllAnimator(g,animatorImages2);
+        /*drawAllAnimator(g,animatorImages2);
         drawAllAnimator(g,animatorImages3);
-        drawAllAnimator(g,animatorImages4);
+        drawAllAnimator(g,animatorImages4);*/
 
         // Secondly, draw the UI above the game elements.
         if (state == GameState.Ready)
@@ -968,7 +996,10 @@ public class GameScreen extends Screen {
         Graphics g = game.getGraphics();
         g.drawARGB(155, 0, 0, 0);
         g.drawImage(Assets.play, _gameWidth/2-Assets.pause.getWidth()/2,0);
-        g.drawString("TAP TO CONTINUE", _gameWidth / 2, _gameHeight / 2, _paintScore);
+//        g.drawString("TAP TO CONTINUE", _gameWidth / 2, _gameHeight / 2, _paintScore);
+        Paint paint = _paintScore;
+        g.drawString("返回主界面",_gameWidth / 4,_gameHeight/2,paint);
+        g.drawString("跳过该关",_gameWidth/4*3,_gameHeight/2,paint);
     }
 
     //绘制游戏结束UI
