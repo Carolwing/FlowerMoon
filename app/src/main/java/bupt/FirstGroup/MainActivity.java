@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import javax.xml.validation.Validator;
+
 import bupt.FirstGroup.entity.CurrentUser;
 import bupt.FirstGroup.game.DBConnection;
 import bupt.FirstGroup.models.Difficulty;
@@ -69,8 +71,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         strat_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(MainActivity.this,ImageAnimation.class);//记得改回来！！！这里只是一个测试
+//                Intent i=new Intent(MainActivity.this,ImageAnimation.class);//记得改回来！！！这里只是一个测试
+//                i = new Intent(this, VideoActivity.class);
+//                i.putExtra("TAG",Difficulty.EASY_TAG);
+//                i.putExtra("difficulty", this._diffEasy);
+//                this.startActivity(i);
+//                MainActivity.this.startActivity(i);
+                Intent i=new Intent(MainActivity.this, VideoActivity.class);
+                i.putExtra("TAG",Difficulty.EASY_TAG);
+                i.putExtra("difficulty", MainActivity.this._diffEasy);
                 MainActivity.this.startActivity(i);
+
             }
         });
 

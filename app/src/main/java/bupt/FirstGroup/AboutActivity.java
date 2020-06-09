@@ -42,6 +42,7 @@ public class AboutActivity extends AppCompatActivity {
                 new int[]{R.id.item_name,R.id.item_image});
         ListView listView=(ListView)findViewById(R.id.about_list);
         listView.setAdapter(adapter);
+        listView.setDividerHeight(0);
 
 
         /*setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
