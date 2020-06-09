@@ -2,6 +2,7 @@ package bupt.FirstGroup;
 
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -10,9 +11,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.DataInputStream;
@@ -33,7 +36,10 @@ public class SelfMusicActivity extends AppCompatActivity {
     private TextView path1;
     private TextView path;
     private ImageButton button;
+    private SeekBar seekBar;
+    private TextView textView8;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -43,6 +49,35 @@ public class SelfMusicActivity extends AppCompatActivity {
         path1 = (TextView) findViewById(R.id.path1);
         path = (TextView)findViewById(R.id.path);
         button = findViewById(R.id.button3);
+        seekBar = findViewById(R.id.seekBar3);
+        textView8 = findViewById(R.id.textView8);
+
+        seekBar.setMax(15);
+        seekBar.setProgress(8);
+        seekBar.setMin(8);
+        textView8.setText(seekBar.getProgress());
+
+        // 设置拖动条改变监听器
+        SeekBar.OnSeekBarChangeListener osbcl = new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                textView8.setText(seekBar.getProgress());
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+
+        };
+
+        // 为拖动条绑定监听器
+        seekBar.setOnSeekBarChangeListener(osbcl);
 
         button.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -83,7 +118,7 @@ public class SelfMusicActivity extends AppCompatActivity {
                         outFile.createNewFile();
                         mCopyFile(fromFile,outFile);
 
-                        Difficulty difficulty = new Difficulty(Difficulty.SELF_TAG,"music.mp3",120,8,"music.txt");
+                        Difficulty difficulty = new Difficulty(Difficulty.SELF_TAG,"music.mp3",120,seekBar.getProgress(),"music.txt");
                         Intent i;
                         i = new Intent(SelfMusicActivity.this,GameActivity.class);
                         i.putExtra("difficulty",difficulty);
