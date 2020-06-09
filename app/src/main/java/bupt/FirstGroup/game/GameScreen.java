@@ -609,39 +609,6 @@ public class GameScreen extends Screen {
         }else{
             return true;
         }
-//        if (Math.abs(lowestBall.y-(_gameHeight-Assets.ballNormal.getHeight()/2))<120){
-//            balls.remove(lowestBall);
-//            flowers.remove(lowestFlower);
-//            onHit(lowestBall);
-//            return true;
-//        }else if (Math.abs(lowestBall.y-(_gameHeight-Assets.ballNormal.getHeight()/2))>120&&Math.abs(lowestBall.y-(_gameHeight-Assets.ballNormal.getHeight()/2))<180){
-//            balls.remove(lowestBall);
-//            flowers.remove(lowestFlower);
-//            onMiss(null);
-//            return false;
-//        }else{
-//            return true;
-//        }
-
-//        while (iter.hasNext()) {
-//            Ball b = iter.next();
-//            if (lowestBall == null || b.y > lowestBall.y) {
-//                lowestBall = b;
-//            }
-//        }
-
-//        if (lowestBall != null && lowestBall.y > HITBOX_CENTER - HITBOX_HEIGHT / 2) {
-//            balls.remove(lowestBall);
-//            onHit(lowestBall);
-//            return lowestBall.type != Ball.BallType.Skull;
-//        } else {
-//            if (lowestBall != null && lowestBall.y > HITBOX_CENTER - HITBOX_HEIGHT / 2 - MISS_ZONE_HEIGHT) {
-//                balls.remove(lowestBall);
-//            }
-//            onMiss(null);
-//
-//            return false;
-//        }
     }
 
     // triggers when a lane gets tapped that has currently no ball in its hitbox
@@ -910,21 +877,25 @@ public class GameScreen extends Screen {
     private void paintBall(Graphics g, Ball b) {
         switch(b.type) {
             case 1:
+            case 2:
+            case 3:
             case 4:
+            case 5:
+            case 6:
                 g.drawImage(Assets.ballNormal, b.x - Assets.ballNormal.getWidth()/2, b.y-Assets.ballNormal.getHeight()/2);
                 break;
-            case 2:
-                g.drawImage(Assets.ballOneUp, b.x - 90, b.y - 90);
-                break;
-            case 3:
-                g.drawImage(Assets.ballMultiplier, b.x - 90, b.y - 90);
-                break;
-            case 5:
-                g.drawImage(Assets.ballBomb,  b.x - 90, b.y - 90);
-                break;
-            case 6:
-                g.drawImage(Assets.ballSkull, b.x - 90, b.y - 90);
-                break;
+//            case 2:
+//                g.drawImage(Assets.ballOneUp, b.x - 90, b.y - 90);
+//                break;
+//            case 3:
+//                g.drawImage(Assets.ballMultiplier, b.x - 90, b.y - 90);
+//                break;
+//            case 5:
+//                g.drawImage(Assets.ballBomb,  b.x - 90, b.y - 90);
+//                break;
+//            case 6:
+//                g.drawImage(Assets.ballSkull, b.x - 90, b.y - 90);
+//                break;
         }
     }
 

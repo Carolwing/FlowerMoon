@@ -21,8 +21,8 @@
         android:id="@+id/textView4"
         android:layout_width="568dp"
         android:layout_height="93dp"
-        android:text="\t本功能可提供玩家自定义曲谱和音乐，曲谱的格式为如下:\n\t以行分割每个note，每行包括一个时间节点和一个音符类型（1-6），以TAB分割，每个时间节点为该note
-出现的秒数*100\n\t如100\t1表示音符类型为1，在第一秒出现。" />
+        android:text="\t\t本功能可提供玩家自定义曲谱和音乐，分数不计入排行榜。\n\t\t曲谱的格式如下:以行分割每个note，每行包括一个时间节点和一个音符类型（1-6），以TAB分割，每个时间节点为该note
+出现的秒数*100\n\t\t例子：如100\t1表示音符类型为1，在第一秒出现。" />
 
     <Button
         android:id="@+id/button5"

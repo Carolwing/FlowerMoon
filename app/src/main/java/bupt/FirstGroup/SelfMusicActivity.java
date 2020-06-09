@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -87,6 +88,8 @@ public class SelfMusicActivity extends AppCompatActivity {
                         i = new Intent(SelfMusicActivity.this,GameActivity.class);
                         i.putExtra("difficulty",difficulty);
                         startActivity(i);
+                    }else{
+                        Toast.makeText(SelfMusicActivity.this, "您选择的文件有误，请重新选择！s", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
