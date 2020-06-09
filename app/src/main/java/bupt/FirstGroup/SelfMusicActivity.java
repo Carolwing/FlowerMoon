@@ -24,11 +24,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-
-import bupt.FirstGroup.framework.Image;
-import bupt.FirstGroup.game.models.MusicPoint;
 import bupt.FirstGroup.models.Difficulty;
 
 public class SelfMusicActivity extends AppCompatActivity {
@@ -55,7 +50,9 @@ public class SelfMusicActivity extends AppCompatActivity {
         seekBar.setMax(15);
         seekBar.setProgress(8);
         seekBar.setMin(8);
-        textView8.setText(seekBar.getProgress());
+        textView8.setText(String.valueOf(seekBar.getProgress()));
+
+        Log.i("lalala","启动自定义曲谱");
 
         // 设置拖动条改变监听器
         SeekBar.OnSeekBarChangeListener osbcl = new SeekBar.OnSeekBarChangeListener() {
@@ -63,7 +60,7 @@ public class SelfMusicActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
-                textView8.setText(seekBar.getProgress());
+                textView8.setText(String.valueOf(seekBar.getProgress()));
             }
 
             @Override
@@ -166,6 +163,7 @@ public class SelfMusicActivity extends AppCompatActivity {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            Toast.makeText(SelfMusicActivity.this, "您选择的文件有误，请重新选择！s", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

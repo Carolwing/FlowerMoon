@@ -27,7 +27,7 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         //保存图像的资源id
-        int[] imageid=new int[]{R.drawable.total,R.drawable.hp_grover};
+        int[] imageid=new int[]{R.drawable.total1,R.drawable.hp_grover};
         //字符串数组，用于指定列表项中的文字
         String[] title=new String[]{"全部","开发人员"};
         List<Map<String,Object>> listitem=new ArrayList<Map<String, Object>>();
