@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import javax.xml.validation.Validator;
+
 import bupt.FirstGroup.entity.CurrentUser;
 import bupt.FirstGroup.game.DBConnection;
 import bupt.FirstGroup.models.Difficulty;
