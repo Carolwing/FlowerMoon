@@ -7,36 +7,35 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="bupt.FirstGroup.AboutActivity"
     android:orientation="vertical"
-    android:background="@drawable/about_background">
+    android:background="@drawable/background_about">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/about_us"
-        android:id="@+id/about_us"
-        android:textSize="30dp"
-        android:layout_marginBottom="10dp"
-        android:textStyle="normal|bold" />
-    <View
+    <!--ImageView
+        android:layout_width="600px"
+        android:layout_height="450px"
+        android:layout_gravity="center"
+        android:background="@drawable/about_title3"/-->
+
+    <!--View
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_marginBottom="10dp"
-        android:background="#000"/>
+        android:background="#000"/-->
 
-    <TextView
+    <!--TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/about_title"
         android:id="@+id/about_title"
         android:textSize="24sp"
         android:layout_marginBottom="18dp"
-        android:textStyle="normal|bold" />
+        android:textStyle="normal|bold" /-->
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/about_list" />
+        android:id="@+id/about_list">
+    </ListView>
+
 </LinearLayout>
